@@ -1,9 +1,9 @@
-[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.0) ](https://bintray.com/record360/maven/record360-sdk/1.0/link)
+[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.1) ](https://bintray.com/record360/maven/record360-sdk/1.1/link)
 
 Record360 Android SDK
 ==================
 
-Last updated on – 09/13/2017
+Last updated on – 02/05/2018
 
 # Introduction
 
@@ -38,7 +38,7 @@ Modify your projects build.gradle file with the following lines.
 Modify your module build.gradle file in which you want to import the SDK with the following lines.
     
     dependencies {
-        compile 'com.record360.sdk:android-sdk:1.0'
+        compile 'com.record360.sdk:android-sdk:1.1'
     }
     
 Press the gradle sync button to import the SDK dependencies.
