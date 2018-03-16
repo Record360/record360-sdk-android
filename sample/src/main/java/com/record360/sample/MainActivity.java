@@ -57,12 +57,12 @@ public class MainActivity extends Record360Activity implements Record360Activity
         // Initialize the Record360SDK
         Record360SDK.initialize(this, sdkSettings);
 
-        EditText usernameEditText = (EditText)findViewById(R.id.sample_username);
-        EditText passwordEditText = (EditText)findViewById(R.id.sample_password);
+        EditText usernameEditText = findViewById(R.id.sample_username);
+        EditText passwordEditText = findViewById(R.id.sample_password);
 
         final SharedPreferences sharedPreferences = this.getSharedPreferences("com.record360.ui.prefs", Context.MODE_PRIVATE);
 
-        Button login = (Button)findViewById(R.id.sample_sign_in);
+        Button login = findViewById(R.id.sample_sign_in);
         login.setOnClickListener(v -> {
             if (usernameEditText != null && passwordEditText != null) {
                 final String username = usernameEditText.getText().toString();
@@ -75,7 +75,7 @@ public class MainActivity extends Record360Activity implements Record360Activity
             }
         });
 
-        Button existingLogin = (Button)findViewById(R.id.existing_sign_in);
+        Button existingLogin = findViewById(R.id.existing_sign_in);
         final String userId = sharedPreferences.getString("USER_ID", null);
         final String token = sharedPreferences.getString("TOKEN", null);
         if (userId != null && token != null) {
@@ -87,7 +87,7 @@ public class MainActivity extends Record360Activity implements Record360Activity
             existingLogin.setEnabled(false);
         }
 
-        Button sdkLogin = (Button)findViewById(R.id.sdk_sign_in);
+        Button sdkLogin = findViewById(R.id.sdk_sign_in);
         sdkLogin.setOnClickListener(v -> {
             start(this, this);
         });
@@ -102,7 +102,7 @@ public class MainActivity extends Record360Activity implements Record360Activity
         editor.putString("TOKEN", token);
         editor.apply();
 
-        Button existingLogin = (Button)findViewById(R.id.existing_sign_in);
+        Button existingLogin = findViewById(R.id.existing_sign_in);
         if (userId != null && token != null) {
             existingLogin.setEnabled(true);
             existingLogin.setOnClickListener(v -> {
