@@ -1,9 +1,9 @@
-[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.1) ](https://bintray.com/record360/maven/record360-sdk/1.1/link)
+[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.3) ](https://bintray.com/record360/maven/record360-sdk/1.3/link)
 
 Record360 Android SDK
 ==================
 
-Last updated on – 02/05/2018
+Last updated on – 04/11/2018
 
 # Introduction
 
@@ -11,7 +11,7 @@ The Record360SDK is an Android Library that allows mobile clients to leverage [R
 
 # Requirements
 
--   Android OS 4.4+
+-   Android OS 4.4+ (API level 19)
 -   ARM Architecture Device
 
 # Example
@@ -25,6 +25,17 @@ Record360 SDK can be installed using Gradle. Gradle uses JCenter as its dependen
 ### build.gradle
 
 Modify your projects build.gradle file with the following lines.
+
+    buildscript {
+        repositories {
+            jcenter()
+        }
+
+        dependencies {
+            classpath 'com.android.tools.build:gradle:2.3.3'
+            classpath "me.tatarka:gradle-retrolambda:3.7.0"
+        }
+    }
     
     allprojects {
         repositories {
@@ -38,7 +49,7 @@ Modify your projects build.gradle file with the following lines.
 Modify your module build.gradle file in which you want to import the SDK with the following lines.
     
     dependencies {
-        compile 'com.record360.sdk:android-sdk:1.1'
+        compile 'com.record360.sdk:android-sdk:1.3'
     }
     
 Press the gradle sync button to import the SDK dependencies.
