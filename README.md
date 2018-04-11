@@ -157,7 +157,7 @@ Upload progress can also be monitored in the callback shown below.
 
 	public void onTransactionUploadProgress(String refNum, long complete, long total);
 
-Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/readme/SDK.pdf)
+Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/master/SDK.pdf)
 
 # License
 
