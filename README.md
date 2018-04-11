@@ -36,7 +36,7 @@ Modify your projects build.gradle file with the following lines.
             classpath "me.tatarka:gradle-retrolambda:3.7.0"
         }
     }
-    
+
     allprojects {
         repositories {
             jcenter() // default
