@@ -161,13 +161,15 @@ Please see the detailed instructions in our [SDK documentation](https://github.c
 
 # Changelog
 ## Migrating from 1.3 -> 1.4
-Record360Interface has been changed and requires changes to override funtions.
+Record360Interface has been changed and requires changes to override functions.
 The following call has been removed:
 
     Map<String, String> getTransactionData(final String referenceNumber, Map<String, String> transactionData)
+
 The call will be replaced with the following:
 
     Map<String, String> onReferenceNumberEnteredWithFieldData(final String referenceNumber, Map<String, String> transactionData)
+
 The following function was also added to allow mapping into new contract forms.
 
     Map<String, String> onContractFieldData(Map<String, String> contractData)
