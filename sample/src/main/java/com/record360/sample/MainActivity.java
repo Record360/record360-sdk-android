@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.record360.sdk.Record360Activity;
+import com.record360.sdk.Record360Activity.Record360Interface;
 import com.record360.sdk.Record360SDK;
 
 import java.util.Map;
@@ -29,7 +30,7 @@ import static com.record360.sdk.Record360SDK.SETTING_VERSION;
 import static com.record360.sdk.Record360SDK.SETTING_VIN_SCAN;
 import static com.record360.sdk.Record360SDK.UPLOAD_MODE_ONLINE;
 
-public class MainActivity extends Record360Activity implements Record360Activity.Record360Interface {
+public class MainActivity extends Record360Activity implements Record360Interface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,13 +118,17 @@ public class MainActivity extends Record360Activity implements Record360Activity
     }
 
     @Override
-    public Map<String, String> getTransactionData(String referenceNumber, Map<String, String> transactionData) {
-        // Replace the first parameter with form and control names from your workflow you wish to replace. You can get a list of fields from the transactionData parameter
+    public Map<String, String> onReferenceNumberEnteredWithFieldData(String referenceNumber, Map<String, String> transactionData) {
         transactionData.put("Inspection Report.Customer Name:", "John Doe");
         transactionData.put("Inspection Report.Multi Line Text Example:", referenceNumber);
         // Example for overwriting email_sent_to_list, accepts a list of emails (only valid emails will be added to transaction)
         // transactionData.put("email_sent_to_list", "john@domain.com, test@domain.org", "invalidWontBeAdded");
         return transactionData;
+    }
+
+    @Override
+    public Map<String, String> onContractFieldData(Map<String, String> contractData) {
+        return contractData;
     }
 
     @Override

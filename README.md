@@ -1,9 +1,9 @@
-[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.3) ](https://bintray.com/record360/maven/record360-sdk/1.3/link)
+[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.4) ](https://bintray.com/record360/maven/record360-sdk/1.4/link)
 
 Record360 Android SDK
 ==================
 
-Last updated on – 04/11/2018
+Last updated on – 07/13/2018
 
 # Introduction
 
@@ -49,7 +49,7 @@ Modify your projects build.gradle file with the following lines.
 Modify your module build.gradle file in which you want to import the SDK with the following lines.
     
     dependencies {
-        compile 'com.record360.sdk:android-sdk:1.3'
+        compile 'com.record360.sdk:android-sdk:1.4'
     }
     
 Press the gradle sync button to import the SDK dependencies.
@@ -158,6 +158,21 @@ Upload progress can also be monitored in the callback shown below.
 	public void onTransactionUploadProgress(String refNum, long complete, long total);
 
 Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/master/SDK.pdf)
+
+# Changelog
+## Migrating from 1.3 -> 1.4
+Record360Interface has been changed and requires changes to override functions.
+The following call has been removed:
+
+    Map<String, String> getTransactionData(final String referenceNumber, Map<String, String> transactionData)
+
+The call will be replaced with the following:
+
+    Map<String, String> onReferenceNumberEnteredWithFieldData(final String referenceNumber, Map<String, String> transactionData)
+
+The following function was also added to allow mapping into new contract forms.
+
+    Map<String, String> onContractFieldData(Map<String, String> contractData)
 
 # License
 
