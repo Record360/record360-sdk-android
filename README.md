@@ -1,9 +1,9 @@
-[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.4) ](https://bintray.com/record360/maven/record360-sdk/1.4/link)
+[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.4) ](https://bintray.com/record360/maven/record360-sdk/1.5/link)
 
 Record360 Android SDK
 ==================
 
-Last updated on – 07/13/2018
+Last updated on – 01/11/2019
 
 # Introduction
 
@@ -20,7 +20,7 @@ To run the example project, clone the repo, and open in Android Studio. Click Ru
 
 # Installation with Gradle
 
-Record360 SDK can be installed using Gradle. Gradle uses JCenter as its dependency manager that automates and simplifies the process of integrating 3rd-party libraries into your projects. It also allows you to specify maven urls to pull in repositories that may not be hosted on JCenter.
+Record360 SDK can be installed using Gradle. Gradle uses JCenter and Google as its dependency managers that automate and simplify the process of integrating 3rd-party libraries into your projects. It also allows you to specify maven urls to pull in repositories that may not be hosted on JCenter or Google.
 
 ### build.gradle
 
@@ -32,8 +32,7 @@ Modify your projects build.gradle file with the following lines.
         }
 
         dependencies {
-            classpath 'com.android.tools.build:gradle:2.3.3'
-            classpath "me.tatarka:gradle-retrolambda:3.7.0"
+            classpath 'com.android.tools.build:gradle:3.2.1'
         }
     }
 
@@ -49,7 +48,7 @@ Modify your projects build.gradle file with the following lines.
 Modify your module build.gradle file in which you want to import the SDK with the following lines.
     
     dependencies {
-        compile 'com.record360.sdk:android-sdk:1.4'
+        compile 'com.record360.sdk:android-sdk:1.5'
     }
     
 Press the gradle sync button to import the SDK dependencies.
@@ -160,6 +159,11 @@ Upload progress can also be monitored in the callback shown below.
 Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/master/SDK.pdf)
 
 # Changelog
+## Version 1.5
+Updated gradle plugin version to 3.2.1
+Updated Android build tools to 28
+
+
 ## Migrating from 1.3 -> 1.4
 Record360Interface has been changed and requires changes to override functions.
 The following call has been removed:
