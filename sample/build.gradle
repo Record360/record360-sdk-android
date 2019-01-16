@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     androidTestImplementation 'com.android.support:multidex:1.0.3'
     androidTestImplementation 'com.android.support:multidex-instrumentation:1.0.3'
-    implementation 'com.record360.sdk:android-sdk:1.5'
+    implementation 'com.record360.sdk:android-sdk:1.5.1'
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'com.android.support' && !details.requested.name.contains('multidex')) {
