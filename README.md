@@ -110,9 +110,9 @@ The session information will be sent from the SDK to the Record360Interface you 
 
 The start functions are as follows:
 
-    public void start(Context context, Record360Interface record360Interface);
-    public void authenticateAndStart(Context context, final String username, final String password, Record360Interface interface);
-    public void authenticatedStart(Context context, final String token, @Nullable final String refNum, final String userId, Record360Interface interface);
+    public void start(Context context, @Nullable referenceNumber, Record360Interface record360Interface);
+    public void authenticateAndStart(Context context, final String username, final String password, @Nullable referenceNumber, Record360Interface interface);
+    public void authenticatedStart(Context context, final String userId, final String token, @Nullable final String referenceNumber, Record360Interface interface);
     
 Depending on the state of the transaction in the workflow, the user will either be prompted to create a new transaction or resume their already existing transaction.
 

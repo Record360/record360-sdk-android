@@ -69,9 +69,9 @@ public class MainActivity extends Record360Activity implements Record360Interfac
                 final String username = usernameEditText.getText().toString();
                 final String password = passwordEditText.getText().toString();
                 if (username.length() > 0 && password.length() > 0) {
-                    authenticateAndStart(this, username, password, this);
+                    authenticateAndStart(this, username, password, null, this);
                 } else {
-                    start(this, this);
+                    start(this, null, this);
                 }
             }
         });
@@ -90,7 +90,7 @@ public class MainActivity extends Record360Activity implements Record360Interfac
 
         Button sdkLogin = (Button) findViewById(R.id.sdk_sign_in);
         sdkLogin.setOnClickListener(v -> {
-            start(this, this);
+            start(this, null, this);
         });
     }
 
