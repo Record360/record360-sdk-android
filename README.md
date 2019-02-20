@@ -29,6 +29,7 @@ Modify your projects build.gradle file with the following lines.
     buildscript {
         repositories {
             jcenter()
+	    google()
         }
 
         dependencies {
