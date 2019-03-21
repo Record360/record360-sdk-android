@@ -4,8 +4,8 @@ package com.record360.sample;
 //
 
 
-import android.support.multidex.MultiDexApplication;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.multidex.MultiDexApplication;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class SampleMultiDexApplication extends MultiDexApplication {
     static {

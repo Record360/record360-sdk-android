@@ -1,9 +1,9 @@
-[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.5.1) ](https://bintray.com/record360/maven/record360-sdk/1.5.1/link)
+[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.6.0) ](https://bintray.com/record360/maven/record360-sdk/1.6.0/link)
 
 Record360 Android SDK
 ==================
 
-Last updated on – 01/11/2019
+Last updated on – 03/11/2019
 
 # Introduction
 
@@ -29,7 +29,7 @@ Modify your projects build.gradle file with the following lines.
     buildscript {
         repositories {
             jcenter()
-	    google()
+            google()
         }
 
         dependencies {
@@ -49,8 +49,21 @@ Modify your projects build.gradle file with the following lines.
 Modify your module build.gradle file in which you want to import the SDK with the following lines.
     
     dependencies {
-        compile 'com.record360.sdk:android-sdk:1.5.1'
+        compile 'com.record360.sdk:android-sdk:1.6.0'
     }
+
+Modify your gradle.properties file to support androidx and jetifier
+    # Project-wide Gradle settings.
+
+    # IDE (e.g. Android Studio) users:
+    # Gradle settings configured through the IDE *will override*
+    # any settings specified in this file.
+
+    # For more details on how to configure your build environment visit
+    # http://www.gradle.org/docs/current/userguide/build_environment.html
+
+    android.enableJetifier=true
+    android.useAndroidX=true
     
 Press the gradle sync button to import the SDK dependencies.
 
@@ -160,6 +173,12 @@ Upload progress can also be monitored in the callback shown below.
 Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/master/SDK.pdf)
 
 # Changelog
+## Version 1.6.0
+Moved to new AndroidX support libraries
+Requires new flags in gradle.properties file to tell IDE AndroidX will be used
+    android.useAndroidX
+    android.enableJetifier
+
 ## Version 1.5.1
 Adds optional reference number parameter to SDK start functions.
     - Will start a transaction with reference number passed in once authenticated.
