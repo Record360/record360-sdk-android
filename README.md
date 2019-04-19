@@ -1,9 +1,9 @@
-[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.6.0) ](https://bintray.com/record360/maven/record360-sdk/1.6.0/link)
+[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.6.1) ](https://bintray.com/record360/maven/record360-sdk/1.6.1/link)
 
 Record360 Android SDK
 ==================
 
-Last updated on – 03/11/2019
+Last updated on – 04/20/2019
 
 # Introduction
 
@@ -49,7 +49,7 @@ Modify your projects build.gradle file with the following lines.
 Modify your module build.gradle file in which you want to import the SDK with the following lines.
     
     dependencies {
-        compile 'com.record360.sdk:android-sdk:1.6.0'
+        compile 'com.record360.sdk:android-sdk:1.6.1'
     }
 
 Modify your gradle.properties file to support androidx and jetifier
@@ -173,11 +173,14 @@ Upload progress can also be monitored in the callback shown below.
 Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/master/SDK.pdf)
 
 # Changelog
+## Version 1.6.1
+Fixed crashing bug that was caused by Record360 Settings that were not being saved to shared preferences correctly
+
 ## Version 1.6.0
 Moved to new AndroidX support libraries
 Requires new flags in gradle.properties file to tell IDE AndroidX will be used
-    android.useAndroidX
-    android.enableJetifier
+    android.useAndroidX=true
+    android.enableJetifier=true
 
 ## Version 1.5.1
 Adds optional reference number parameter to SDK start functions.
