@@ -1,9 +1,9 @@
-[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.7) ](https://bintray.com/record360/maven/record360-sdk/1.7/link)
+[![Version](https://api.bintray.com/packages/record360/maven/record360-sdk/images/download.svg?version=1.7.1) ](https://bintray.com/record360/maven/record360-sdk/1.7.1/link)
 
 Record360 Android SDK
 ==================
 
-Last updated on – 07/18/2019
+Last updated on – 11/15/2019
 
 # Introduction
 
@@ -33,7 +33,7 @@ Modify your projects build.gradle file with the following lines.
         }
 
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.2.1'
+            classpath 'com.android.tools.build:gradle:3.4.2'
         }
     }
 
@@ -49,7 +49,7 @@ Modify your projects build.gradle file with the following lines.
 Modify your module build.gradle file in which you want to import the SDK with the following lines.
     
     dependencies {
-        compile 'com.record360.sdk:android-sdk:1.7'
+        compile 'com.record360.sdk:android-sdk:1.7.1'
     }
 
 Modify your gradle.properties file to support androidx and jetifier
@@ -173,6 +173,9 @@ Upload progress can also be monitored in the callback shown below.
 Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/master/SDK.pdf)
 
 # Changelog
+## Version 1.7.1
+Added 64bit Support
+
 ## Version 1.7
 Added workflow versioning
 Added ability to clear checklist fields based on transaction type
