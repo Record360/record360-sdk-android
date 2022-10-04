@@ -69,14 +69,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="1dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:background="@color/record360_background"/>-->
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/existing_sign_in"
         android:layout_width="match_parent"

@@ -28,7 +28,7 @@ Modify your project (top-level) build.gradle file with the following lines.
 Note: You will need to setup a Github PAT according to directions here:
 https://docs.github.com/en/packages/learn-github-packages/introduction-to-github-packages#authenticating-to-github-packages
 Once you create PAT please insert your username and PAT in place of GITHUB_USERNAME and GITHUB_PAT
-
+```groovy
     buildscript {
         repositories {
             jcenter()
@@ -57,28 +57,23 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
             }
         }
     }
-
+```
 Modify your App build.gradle (App Level) file in which you want to import the SDK with the following lines.
-    
+```groovy
     dependencies {
         implementation 'com.record360.sdk:android-sdk:4.9.2'
         kapt "com.google.dagger:dagger-compiler:2.44"
         implementation 'com.google.dagger:dagger:2.44'
         implementation 'androidx.multidex:multidex:2.0.1'
     }
+```    
 
 Modify your gradle.properties file to support androidx and jetifier
-    
-    # Project-wide Gradle settings.
-    # IDE (e.g. Android Studio) users:
-    # Gradle settings configured through the IDE *will override*
-    # any settings specified in this file.
-
-    # For more details on how to configure your build environment visit
-    # http://www.gradle.org/docs/current/userguide/build_environment.html
-
+```groovy
+    // Project-wide Gradle settings.
     android.enableJetifier=true
     android.useAndroidX=true
+```    
     
 Press the gradle sync button to import the SDK dependencies.
 
@@ -92,30 +87,33 @@ Record360 can provide the compiled code, contact support@record360.com for more 
 In order to properly and quickly build the application, MultiDex must be enabled.
 Create a new java class in your package directory (e.g. app/java/com.example.sample/).
 Also, statically initialize compat vectors for resources.
-
+```java
     public class SampleMultiDexApplication extends MultidexApplication {
         static {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         }
     }
-    
+```
 Add application class name to AndroidManifest.xml
+```xml
 
 	<application
-	    android:name=".SampleMultiDexApplication"
+	    android:name=".SampleMultiDexApplication">
       ...
 	</application>
+```
   
 Add multidex flag to defaultConfig section in the module's build.gradle file
-
+```groovy
 	defaultConfig {
-      multiDexEnabled true
+        multiDexEnabled true
 	}
+```
 
 ### Add Dagger
 In order to use our library you must setup Dagger. You can copy and insert the class found at:
 com.record360.sample.dagger.ApplicationComponent;
-
+```java
     @Singleton
     @Component(
         modules = {
@@ -140,14 +138,17 @@ com.record360.sample.dagger.ApplicationComponent;
         // MainActivity extends the library provided Record360Activity
         void inject(MainActivity launchActivity);
     }
+```
 
 # Enable access to generated Dagger class
+```java
+
     public class SampleMultiDexApplication extends MultidexApplication {
         private static ApplicationComponent applicationComponent;
 
         public void onCreate() {
             super.onCreate();
-            ... 
+            // ... 
             Record360SDK.initialize(getApplicationContext(), settings);
             initApplicationComponent(this);
         }
@@ -162,44 +163,48 @@ com.record360.sample.dagger.ApplicationComponent;
             return applicationComponent;
         }
     }
+```
 
     
 ### Initialize the Record360SDK
 
 Initialize a Record360SDK. This can be done at the Application level or within an Activity.
-    
+```java
     @Override
     public void onCreate() {
         super.onCreate();
         Record360SDK.Setting[] settings = ...
         Record360SDK.initialize(this, settings);
     }
+```
 
 ### Entering the workflow
 
 Create an Activity that will extend the Record360Activity. This will give you access to commands needed to enter the workflow.
 Also, designate a Record360Interface that will handle SDK inspection events.
-
+```java
     public class MainActivity extends Record360Activity implements Record360Interface {
-        public void OnCreate() {
-            ...
+        @Override
+        public void onCreate() {
             start(this, this);
         }
     }
+```
     
 The session information will be sent from the SDK to the Record360Interface you supply as a parameter to the different start functions available in the Record360Activity. Above is an example of starting the workflow using our provided in login UI.
 
 The start functions are as follows:
-
+```java
     startWithLogin(Context context, @Nullable referenceNumber, Record360Interface record360Interface);
     authenticateAndStart(Context context, final String username, final String password, @Nullable referenceNumber, Record360Interface interface);
     authenticatedStart(Context context, final String userId, final String token, @Nullable final String referenceNumber, Record360Interface interface);
     authenticatedStart(Context context, String userId, String token, @Nullable String referenceNum, @Nullable Integer workOrderId, @Nullable String workOrderLabel, Record360Interface interface)
+```
     
 Depending on the state of the inspection in the workflow, the user will either be prompted to create a new inspection or resume their already existing inspection.
 
 ### Adding workflow settings
-	
+```java
 	  Record360SDK.Setting[] sdkSettings = new Record360SDK.Setting[]{
                 new Record360SDK.Setting(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
                 new Record360SDK.Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
@@ -213,32 +218,35 @@ Depending on the state of the inspection in the workflow, the user will either b
                 new Record360SDK.Setting(SETTING_LINKS, "Privacy Policy", "https://www.record360.com/privacy"),
                 new Record360SDK.Setting(SETTING_VERSION)
         };
+```
 
 ### Responding to workflow events
 
 Implement the Record360Interface to respond to workflow events.
 To respond to user login events use the Record360Interface callback methods below.
-
+```java
 	public void onUserAuthenticated(final String username, final String userId, final String token);
 	public void onInspectionCancelled(String referenceNumber);
+```
 
 After the inspection has finished or is cancelled by the user, one of the callback methods below will be called.
-	
+```java
 	public void onInspectionComplete(String referenceNumber);
 	public void onInspectionCancelled(String referenceNumber);
+```
   
 ### Responding to inspection upload events
 
 When the Record360SDK has finished uploading a inspection, on of the callback methods below will be called.
-
+```java
 	public void onInspectionUploaded(String referenceNumber);
 	public void onInspectionUploadFailed(String referenceNumber);
+```
   
 Upload progress can also be monitored in the callback shown below.
-
-	public void onInspectionUploadProgress(String refNum, long complete, long total);
-
-Please see the detailed instructions in our [SDK documentation](https://github.com/Record360/record360-sdk-android/blob/master/SDK.pdf)
+```java
+    public void onInspectionUploadProgress(String refNum, long complete, long total);
+```
 
 # Changelog
 ## Version 4.9.2
