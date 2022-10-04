@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Sample</string>
     <string name="record360_sample_title">Record360 SDK Sample Client</string>
-    <string name="existing_sign_in">Saved login</string>
-    <string name="sdk_sign_in">Use SDK login</string>
+    <string name="existing_sign_in">Saved Credentials</string>
+    <string name="sdk_sign_in">Provided SDK login</string>
+    <string name="sign_in">Sign In</string>
 </resources>
