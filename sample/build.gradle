@@ -73,5 +73,5 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     androidTestImplementation 'androidx.multidex:multidex:2.0.1'
     androidTestImplementation 'androidx.multidex:multidex-instrumentation:2.0.0'
-    implementation 'com.record360.sdk:android-sdk:4.9.2'
+    implementation 'com.record360.sdk:android-sdk:4.9.3'
 }

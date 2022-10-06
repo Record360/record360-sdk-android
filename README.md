@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.9.2-success)](https://github.com/Record360/record360-sdk-android/packages/1655552)
+[![Version](https://img.shields.io/badge/Record360SDK-4.9.3-success)](https://github.com/Record360/android/packages/1642075?version=4.9.3)
 
 Record360 Android SDK
 ==================
 
-Last updated on – Oct 3rd, 2022
+Last updated on – Oct 6th, 2022
 
 # Introduction
 
@@ -61,7 +61,7 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 Modify your App build.gradle (App Level) file in which you want to import the SDK with the following lines.
 ```groovy
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.9.2'
+        implementation 'com.record360.sdk:android-sdk:4.9.3'
         kapt "com.google.dagger:dagger-compiler:2.44"
         implementation 'com.google.dagger:dagger:2.44'
         implementation 'androidx.multidex:multidex:2.0.1'
@@ -249,6 +249,9 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.9.3
+Fixes crashing issue in TaskDetailActivity
+
 ## Version 4.9.2
 Brings SDK version up to match official Record360 Android App
 Added Conditional fields
