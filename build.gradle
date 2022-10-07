@@ -21,6 +21,7 @@ allprojects {
         maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
         maven { url 'https://jitpack.io'}
         maven { url 'https://maven.google.com' }
+        maven { url 'https://customers.pspdfkit.com/maven/' }
         maven { url 'https://maven.pkg.github.com/Record360/record360-sdk-android'
             credentials {
                 username GITHUB_USERNAME

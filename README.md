@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.9.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.9.3)
+[![Version](https://img.shields.io/badge/Record360SDK-4.9.4-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.9.4)
 
 Record360 Android SDK
 ==================
 
-Last updated on – Oct 6th, 2022
+Last updated on – Oct 7th, 2022
 
 # Introduction
 
@@ -49,6 +49,7 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
             maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
             maven { url 'https://jitpack.io'}
             maven { url 'https://maven.google.com' }
+            maven { url 'https://customers.pspdfkit.com/maven/' }
             maven { url 'https://maven.pkg.github.com/Record360/record360-sdk-android'
                 credentials {
                     username GITHUB_USERNAME
@@ -61,7 +62,7 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 Modify your App build.gradle (App Level) file in which you want to import the SDK with the following lines.
 ```groovy
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.9.3'
+        implementation 'com.record360.sdk:android-sdk:4.9.4'
         kapt "com.google.dagger:dagger-compiler:2.44"
         implementation 'com.google.dagger:dagger:2.44'
         implementation 'androidx.multidex:multidex:2.0.1'
