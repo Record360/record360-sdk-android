@@ -250,6 +250,10 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.9.4
+Fixes dependency issues
+Note: Make sure to update (project-level) build.gradle file as shown above
+
 ## Version 4.9.3
 Fixes crashing issue in TaskDetailActivity
 
