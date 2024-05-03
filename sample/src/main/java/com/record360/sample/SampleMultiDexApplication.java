@@ -18,22 +18,17 @@ import static com.record360.sdk.Record360SDK.SETTING_VERSION;
 import static com.record360.sdk.Record360SDK.SETTING_VIN_SCAN;
 import static com.record360.sdk.Record360SDK.UPLOAD_MODE_ONLINE;
 
-import android.content.Context;
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDexApplication;
 
-import com.record360.sample.dagger.ApplicationComponent;
-import com.record360.sample.dagger.DaggerApplicationComponent;
 import com.record360.sdk.Record360SDK;
-import com.record360.sdk.dagger.ContextModule;
+
 
 public class SampleMultiDexApplication extends MultiDexApplication {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    private static ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
@@ -58,16 +53,6 @@ public class SampleMultiDexApplication extends MultiDexApplication {
         };
 
         Record360SDK.initialize(getApplicationContext(), settings);
-        initApplicationComponent(this);
     }
 
-    public static void initApplicationComponent(Context appContext) {
-        applicationComponent = DaggerApplicationComponent.builder()
-                .contextModule(new ContextModule(appContext))
-                .build();
-    }
-
-    public static ApplicationComponent getApplicationComponent() {
-        return applicationComponent;
-    }
 }

@@ -19,7 +19,6 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SampleMultiDexApplication.getApplicationComponent().inject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
