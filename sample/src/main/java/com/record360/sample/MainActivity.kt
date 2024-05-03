@@ -110,7 +110,7 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
     override fun onReferenceNumberEnteredWithFieldData(
         referenceNumber: String?,
         fieldData: Map<String?, String?>?
-    ): Map<String?, String?>? {
+    ): Map<String?, String?> {
         val map = fieldData?.toMutableMap() ?: mutableMapOf()
         map["Inspection Report.Customer Name:"] = "John Doe"
         map["Inspection Report.Multi Line Text Example:"] = referenceNumber
