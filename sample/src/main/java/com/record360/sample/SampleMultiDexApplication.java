@@ -3,12 +3,16 @@ package com.record360.sample;
 import static com.record360.sdk.Record360SDK.REGION_UNITED_STATES;
 import static com.record360.sdk.Record360SDK.RESOLUTION_MEDIUM;
 import static com.record360.sdk.Record360SDK.SETTING_ACCOUNT;
+import static com.record360.sdk.Record360SDK.SETTING_COMPRESS_MEDIA;
+import static com.record360.sdk.Record360SDK.SETTING_ENABLE_MULTIPLE_CAMERA;
+import static com.record360.sdk.Record360SDK.SETTING_LEGACY_CAMERA;
 import static com.record360.sdk.Record360SDK.SETTING_LICENSE_REGION;
 import static com.record360.sdk.Record360SDK.SETTING_LINKS;
 import static com.record360.sdk.Record360SDK.SETTING_LOGOUT;
 import static com.record360.sdk.Record360SDK.SETTING_NATIVE_RESOLUTION;
 import static com.record360.sdk.Record360SDK.SETTING_NOTATIONS_ON_IMAGES;
 import static com.record360.sdk.Record360SDK.SETTING_RATE_RECORD360;
+import static com.record360.sdk.Record360SDK.SETTING_RECORD_AUDIO;
 import static com.record360.sdk.Record360SDK.SETTING_RESOLUTION;
 import static com.record360.sdk.Record360SDK.SETTING_SEND_SUPPORT_LOG;
 import static com.record360.sdk.Record360SDK.SETTING_SHOW_INTRO_VIDEO;
@@ -18,33 +22,31 @@ import static com.record360.sdk.Record360SDK.SETTING_VERSION;
 import static com.record360.sdk.Record360SDK.SETTING_VIN_SCAN;
 import static com.record360.sdk.Record360SDK.UPLOAD_MODE_ONLINE;
 
-import android.content.Context;
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDexApplication;
 
-import com.record360.sample.dagger.ApplicationComponent;
-import com.record360.sample.dagger.DaggerApplicationComponent;
 import com.record360.sdk.Record360SDK;
-import com.record360.sdk.dagger.ContextModule;
+
 
 public class SampleMultiDexApplication extends MultiDexApplication {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    private static ApplicationComponent applicationComponent;
-
     @Override
     public void onCreate() {
         super.onCreate();
         Record360SDK.Setting[] settings = new Record360SDK.Setting[]{
-                new Record360SDK.Setting(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
-                new Record360SDK.Setting(SETTING_RESOLUTION, RESOLUTION_MEDIUM, true),
                 new Record360SDK.Setting(SETTING_UPLOAD_MODE, UPLOAD_MODE_ONLINE, true),
+                new Record360SDK.Setting(SETTING_RESOLUTION, RESOLUTION_MEDIUM, true),
+                new Record360SDK.Setting(SETTING_COMPRESS_MEDIA, Boolean.toString(true), true),
+                new Record360SDK.Setting(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
+                new Record360SDK.Setting(SETTING_ENABLE_MULTIPLE_CAMERA, Boolean.toString(false), true),
+                new Record360SDK.Setting(SETTING_LEGACY_CAMERA, Boolean.toString(false), true),
+                new Record360SDK.Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
+                new Record360SDK.Setting(SETTING_RECORD_AUDIO, Boolean.toString(true), true),
+                new Record360SDK.Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
+                new Record360SDK.Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
                 new Record360SDK.Setting(SETTING_LICENSE_REGION, REGION_UNITED_STATES, true),
                 new Record360SDK.Setting(SETTING_SHOW_INTRO_VIDEO),
                 new Record360SDK.Setting(SETTING_SEND_SUPPORT_LOG),
@@ -58,16 +60,6 @@ public class SampleMultiDexApplication extends MultiDexApplication {
         };
 
         Record360SDK.initialize(getApplicationContext(), settings);
-        initApplicationComponent(this);
     }
 
-    public static void initApplicationComponent(Context appContext) {
-        applicationComponent = DaggerApplicationComponent.builder()
-                .contextModule(new ContextModule(appContext))
-                .build();
-    }
-
-    public static ApplicationComponent getApplicationComponent() {
-        return applicationComponent;
-    }
 }

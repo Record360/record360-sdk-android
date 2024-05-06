@@ -19,10 +19,8 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SampleMultiDexApplication.getApplicationComponent().inject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
         val sharedPreferences = getSharedPreferences("com.record360.ui.prefs", MODE_PRIVATE)
         binding.sampleSignIn.setOnClickListener {
             val username = binding.sampleUsername.text.toString()
@@ -111,7 +109,7 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
     override fun onReferenceNumberEnteredWithFieldData(
         referenceNumber: String?,
         fieldData: Map<String?, String?>?
-    ): Map<String?, String?>? {
+    ): Map<String?, String?> {
         val map = fieldData?.toMutableMap() ?: mutableMapOf()
         map["Inspection Report.Customer Name:"] = "John Doe"
         map["Inspection Report.Multi Line Text Example:"] = referenceNumber
