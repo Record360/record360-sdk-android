@@ -194,51 +194,51 @@ Upload progress can also be monitored in the callback shown below.
 
 # Changelog
 ## Version 4.15.2
-Android minimum SDK verion bumped up to Android 7.0 (24+)
-Removed Dagger Requirement in host app
-Upgraded Android Gradle Plugin to 7.4.2
-Updated JVM to Version_11
+-   Android minimum SDK verion bumped up to Android 7.0 (24+)
+-   Removed Dagger Requirement in host app
+-   Upgraded Android Gradle Plugin to 7.4.2
+-   Updated JVM to Version_11
 
 ## Version 4.9.4
-Fixes dependency issues
-Note: Make sure to update (project-level) build.gradle file as shown above
+-   Fixes dependency issues
+-   Note: Make sure to update (project-level) build.gradle file as shown above
 
 ## Version 4.9.3
-Fixes crashing issue in TaskDetailActivity
+-   Fixes crashing issue in TaskDetailActivity
 
 ## Version 4.9.2
-Brings SDK version up to match official Record360 Android App
-Added Conditional fields
-Improved upload progress UI
-Added Tasks
+-   Brings SDK version up to match official Record360 Android App
+-   Added Conditional fields
+-   Improved upload progress UI
+-   Added Tasks
 
 ## Version 1.7.1
-Added 64bit Support
+-   Added 64bit Support
 
 ## Version 1.7
-Added workflow versioning
-Added ability to clear checklist fields based on inspection type
+-   Added workflow versioning
+-   Added ability to clear checklist fields based on inspection type
 
 ## Version 1.6.1
-Fixed crashing bug that was caused by Record360 Settings that were not being saved to shared preferences correctly
+-   Fixed crashing bug that was caused by Record360 Settings that were not being saved to shared preferences correctly
 
 ## Version 1.6.0
-Moved to new AndroidX support libraries
-Requires new flags in gradle.properties file to tell IDE AndroidX will be used
-    android.useAndroidX=true
-    android.enableJetifier=true
+-   Moved to new AndroidX support libraries
+-   Requires new flags in gradle.properties file to tell IDE AndroidX will be used
+    -   android.useAndroidX=true
+    -   android.enableJetifier=true
 
 ## Version 1.5.1
-Adds optional reference number parameter to SDK start functions.
+-   Adds optional reference number parameter to SDK start functions.
     - Will start an inspection with reference number passed in once authenticated.
 
 ## Version 1.5
-Updated gradle plugin version to 3.2.1
-Updated Android build tools to 28
+-   Updated gradle plugin version to 3.2.1
+-   Updated Android build tools to 28
 
 
 ## Migrating from 1.3 -> 1.4
-Record360Interface has been changed and requires changes to override functions.
+-   Record360Interface has been changed and requires changes to override functions.
 The following call has been removed:
 
     Map<String, String> getTransactionData(final String referenceNumber, Map<String, String> transactionData)

@@ -21,7 +21,6 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
         val sharedPreferences = getSharedPreferences("com.record360.ui.prefs", MODE_PRIVATE)
         binding.sampleSignIn.setOnClickListener {
             val username = binding.sampleUsername.text.toString()
