@@ -1,17 +1,17 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.9.4-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.9.4)
+[![Version](https://img.shields.io/badge/Record360SDK-4.15.2-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.15.2)
 
 Record360 Android SDK
 ==================
 
-Last updated on – Oct 7th, 2022
+Last updated on – May 6th, 2024
 
 # Introduction
 
-The Record360SDK is an Android Library that allows mobile clients to leverage [Record360](https://www.record360.com).  This allows the client to track and record the condition of assets using the Record360 workflow.  An account with Record360 is required.  Please contact sales@record360.com for details.
+The Record360SDK is an Android Library that allows mobile clients to embed [Record360](https://www.record360.com). This allows the client to track and record the condition of assets using the Record360 workflow. **An account with Record360 is required.  Please contact sales@record360.com for details.**
 
 # Requirements
 
--   Android OS 5.0+ (API level 21)
+-   Android OS 7.0+ (API level 24)
 -   ARM Architecture Device
 
 # Example
@@ -27,7 +27,7 @@ Record360 SDK can be installed using Gradle. See example below.
 Modify your project (top-level) build.gradle file with the following lines.
 Note: You will need to setup a Github PAT according to directions here:
 https://docs.github.com/en/packages/learn-github-packages/introduction-to-github-packages#authenticating-to-github-packages
-Once you create PAT please insert your username and PAT in place of GITHUB_USERNAME and GITHUB_PAT
+Once you create PAT please insert your username and PAT in place of GITHUB_USERNAME and GITHUB_PAT (the example below makes use of global gradle properties to save sensitive data and keep it out of source control)
 ```groovy
     buildscript {
         repositories {
@@ -37,7 +37,7 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
         }
 
         dependencies {
-            classpath 'com.android.tools.build:gradle:7.1.3'
+            classpath 'com.android.tools.build:gradle:7.4.2'
             classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
         }
     }
@@ -62,9 +62,7 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 Modify your App build.gradle (App Level) file in which you want to import the SDK with the following lines.
 ```groovy
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.9.4'
-        kapt "com.google.dagger:dagger-compiler:2.44"
-        implementation 'com.google.dagger:dagger:2.44'
+        implementation 'com.record360.sdk:android-sdk:4.15.2'
         implementation 'androidx.multidex:multidex:2.0.1'
     }
 ```    
@@ -107,75 +105,20 @@ Add application class name to AndroidManifest.xml
 Add multidex flag to defaultConfig section in the module's build.gradle file
 ```groovy
 	defaultConfig {
-        multiDexEnabled true
+	    multiDexEnabled true
 	}
 ```
 
-### Add Dagger
-In order to use our library you must setup Dagger. You can copy and insert the class found at:
-com.record360.sample.dagger.ApplicationComponent;
-```java
-    @Singleton
-    @Component(
-        modules = {
-            ConditionalModule.class,
-            ContextModule.class,
-            AnalyticsModule.class,
-            ApiModule.class,
-            GsonModule.class,
-            NavigationModule.class,
-            NetworkModule.class,
-            RealmModule.class,
-            NotificationModule.class,
-            SettingsModule.class,
-            TemplateModule.class,
-            InspectionModule.class,
-            UploadModule.class
-        }
-    )
-    
-    public interface ApplicationComponent {
-        // You will have to create an inject method stub for your activity
-        // MainActivity extends the library provided Record360Activity
-        void inject(MainActivity launchActivity);
-    }
-```
-
-# Enable access to generated Dagger class
+# Initialize the Record360SDK
+Initialize a Record360SDK. This can be done at the Application level or within an Activity.
 ```java
 
     public class SampleMultiDexApplication extends MultidexApplication {
-        private static ApplicationComponent applicationComponent;
-
         public void onCreate() {
             super.onCreate();
-            // ... 
+            Record360SDK.Setting[] settings = ...
             Record360SDK.initialize(getApplicationContext(), settings);
-            initApplicationComponent(this);
         }
-
-        public static void initApplicationComponent(Context appContext) {
-            applicationComponent = DaggerApplicationComponent.builder()
-            .contextModule(new ContextModule(appContext))
-            .build();
-        }
-
-        public static ApplicationComponent getApplicationComponent() {
-            return applicationComponent;
-        }
-    }
-```
-
-    
-### Initialize the Record360SDK
-
-Initialize a Record360SDK. This can be done at the Application level or within an Activity.
-```java
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Record360SDK.Setting[] settings = ...
-        Record360SDK.initialize(this, settings);
     }
 ```
 
@@ -250,6 +193,12 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.15.2
+Android minimum SDK verion bumped up to Android 7.0 (24+)
+Removed Dagger Requirement in host app
+Upgraded Android Gradle Plugin to 7.4.2
+Updated JVM to Version_11
+
 ## Version 4.9.4
 Fixes dependency issues
 Note: Make sure to update (project-level) build.gradle file as shown above
