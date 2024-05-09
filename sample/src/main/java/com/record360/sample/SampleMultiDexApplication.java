@@ -52,10 +52,10 @@ public class SampleMultiDexApplication extends MultiDexApplication {
                 new Record360SDK.Setting(SETTING_SEND_SUPPORT_LOG),
                 new Record360SDK.Setting(SETTING_ACCOUNT),
                 new Record360SDK.Setting(SETTING_LOGOUT),
-                new Record360SDK.Setting(SETTING_LINKS, getString(R.string.setting_access_records), "https://www.record360.com"),
+                new Record360SDK.Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_access_records), "https://www.record360.com"),
                 new Record360SDK.Setting(SETTING_RATE_RECORD360),
-                new Record360SDK.Setting(SETTING_LINKS, getString(R.string.setting_terms_of_service), "https://www.record360.com/terms"),
-                new Record360SDK.Setting(SETTING_LINKS, getString(R.string.setting_privacy_policy), "https://www.record360.com/privacy"),
+                new Record360SDK.Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_terms_of_service), "https://www.record360.com/terms"),
+                new Record360SDK.Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_privacy_policy), "https://www.record360.com/privacy"),
                 new Record360SDK.Setting(SETTING_VERSION)
         };
 

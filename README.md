@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.15.2-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.15.2)
+[![Version](https://img.shields.io/badge/Record360SDK-4.15.7-1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.15.7-1)
 
 Record360 Android SDK
 ==================
 
-Last updated on – May 6th, 2024
+Last updated on – May 8th, 2024
 
 # Introduction
 
@@ -37,8 +37,8 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
         }
 
         dependencies {
-            classpath 'com.android.tools.build:gradle:7.4.2'
-            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
+            classpath 'com.android.tools.build:gradle:8.2.2'
+            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
         }
     }
 
@@ -61,9 +61,22 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 ```
 Modify your App build.gradle (App Level) file in which you want to import the SDK with the following lines.
 ```groovy
+    android {
+	...
+	compileOptions {
+            sourceCompatibility JavaVersion.VERSION_17
+            targetCompatibility JavaVersion.VERSION_17
+            coreLibraryDesugaringEnabled true
+	}
+	kotlinOptions {
+            jvmTarget = "17"
+    	}
+    }
+
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.15.2'
+        implementation 'com.record360.sdk:android-sdk:4.15.7-1'
         implementation 'androidx.multidex:multidex:2.0.1'
+	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     }
 ```    
 
@@ -193,6 +206,12 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.15.7-1 (May 8th, 2024)
+-   Upgraded Android Gradle Plugin to 8.2.2
+-   Upgraded Kotlin Gradle Plugin to 1.8.10
+-   Updated JVM to VERSION_17
+-   CoreLibraryDesugaring now needed in host app
+
 ## Version 4.15.2
 -   Android minimum SDK verion bumped up to Android 7.0 (24+)
 -   Removed Dagger Requirement in host app

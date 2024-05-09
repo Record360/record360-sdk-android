@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.record360.sample.databinding.ActivityMainBinding
+import com.record360.R
+import com.record360.databinding.ActivityMainBinding
 import timber.log.Timber
 
 class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
