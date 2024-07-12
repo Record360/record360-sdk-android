@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.15.7-1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.15.7-1)
+[![Version](https://img.shields.io/badge/Record360SDK-4.16.1-5-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.16.1-5)
 
 Record360 Android SDK
 ==================
