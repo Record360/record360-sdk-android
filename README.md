@@ -206,6 +206,10 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.16.1-5 (Jul 11th, 2024)
+-   Updated Target Android SDK to 34
+-   Fixes sdk exit routing when user completes or cancels an inspection with provided ref num
+
 ## Version 4.15.7-1 (May 8th, 2024)
 -   Upgraded Android Gradle Plugin to 8.2.2
 -   Upgraded Kotlin Gradle Plugin to 1.8.10
