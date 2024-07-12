@@ -3,7 +3,7 @@
 Record360 Android SDK
 ==================
 
-Last updated on – May 8th, 2024
+Last updated on – July 11th, 2024
 
 # Introduction
 
