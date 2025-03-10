@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.16.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.16.3)
+[![Version](https://img.shields.io/badge/Record360SDK-4.18-4-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.18-4)
 
 Record360 Android SDK
 ==================
 
-Last updated on – August 13th, 2024
+Last updated on – Mar 10th, 2025
 
 # Introduction
 
@@ -36,8 +36,8 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
         }
 
         dependencies {
-            classpath 'com.android.tools.build:gradle:8.2.2'
-            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
+            classpath 'com.android.tools.build:gradle:8.5.2'
+            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21'
         }
     }
 
@@ -64,10 +64,9 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
     android {
 	...
     packagingOptions {
-        pickFirst 'lib/x86/libc++_shared.so'
-        pickFirst 'lib/x86_64/libc++_shared.so'
-        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        jniLibs {
+            pickFirsts += ['lib/x86/libc++_shared.so', 'lib/x86_64/libc++_shared.so', 'lib/armeabi-v7a/libc++_shared.so', 'lib/arm64-v8a/libc++_shared.so']
+        }
     }
 	compileOptions {
             sourceCompatibility JavaVersion.VERSION_17
@@ -82,7 +81,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
     dependencies {
         implementation 'com.record360.sdk:android-sdk:4.16.3'
         implementation 'androidx.multidex:multidex:2.0.1'
-	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+	    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     }
 ```    
 
