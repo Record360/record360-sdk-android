@@ -31,9 +31,8 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 ```groovy
     buildscript {
         repositories {
-            jcenter()
             google()
-
+            mavenCentral()
         }
 
         dependencies {
@@ -44,7 +43,8 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 
     allprojects {
         repositories {
-            jcenter()
+            mavenCentral()
+            maven { url 'https://maven.scijava.org/content/repositories/public/' }
             maven { url 'https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/' }
             maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
             maven { url 'https://jitpack.io'}
@@ -212,6 +212,10 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.16.3-1 (Aug 14th, 2024)
+-   Fix SDK exit routing
+-   Fix some compilation issues when used in external projects
+
 ## Version 4.16.1-5 (Jul 11th, 2024)
 -   Updated Target Android SDK to 34
 -   Fixes sdk exit routing when user completes or cancels an inspection with provided ref num
