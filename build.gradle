@@ -2,7 +2,6 @@
 
 buildscript {
     repositories {
-        jcenter()
         google()
         mavenCentral()
     }
@@ -16,7 +15,8 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
+        maven { url 'https://maven.scijava.org/content/repositories/public/' }
         maven { url 'https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/' }
         maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
         maven { url 'https://jitpack.io'}
