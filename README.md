@@ -211,6 +211,15 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.18-4 (Mar 10th, 2025)
+-  Update Android Gradle Plugin to 8.5.2
+-  Update Kotlin Gradle Plugin to 2.0.21
+-  New SDK Features
+  - Improvements to PDF signatures
+  - Improved task handling
+  - Improved settings
+  - Improved Camera UI
+
 ## Version 4.16.3-1 (Aug 14th, 2024)
 -   Fix SDK exit routing
 -   Fix some compilation issues when used in external projects
