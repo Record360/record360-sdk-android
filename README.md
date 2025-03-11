@@ -81,7 +81,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
     dependencies {
         implementation 'com.record360.sdk:android-sdk:4.16.3'
         implementation 'androidx.multidex:multidex:2.0.1'
-	    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+        coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     }
 ```    
 
