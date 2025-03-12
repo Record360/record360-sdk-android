@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.18--4-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.18-4)
+[![Version](https://img.shields.io/badge/Record360SDK-4.18--5-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.18-5)
 
 Record360 Android SDK
 ==================
 
-Last updated on – Mar 10th, 2025
+Last updated on – Mar 12th, 2025
 
 # Introduction
 
@@ -79,7 +79,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
     }
 
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.16.3'
+        implementation 'com.record360.sdk:android-sdk:4.18-5'
         implementation 'androidx.multidex:multidex:2.0.1'
         coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     }
@@ -157,10 +157,10 @@ The session information will be sent from the SDK to the Record360Interface you 
 
 The start functions are as follows:
 ```java
-    startWithLogin(Context context, @Nullable referenceNumber, Record360Interface record360Interface);
-    authenticateAndStart(Context context, final String username, final String password, @Nullable referenceNumber, Record360Interface interface);
-    authenticatedStart(Context context, final String userId, final String token, @Nullable final String referenceNumber, Record360Interface interface);
-    authenticatedStart(Context context, String userId, String token, @Nullable String referenceNum, @Nullable Integer workOrderId, @Nullable String workOrderLabel, Record360Interface interface)
+    startWithLogin(Context context, @Nullable String referenceNumber, Record360Interface record360Interface);
+    authenticateAndStart(Context context, final String username, final String password, @Nullable String referenceNumber, Record360Interface record360Interface);
+    authenticatedStart(Context context, final String userId, final String token, @Nullable final String referenceNumber, Record360Interface record360Interface);
+    authenticatedStart(Context context, String userId, String token, @Nullable String referenceNum, @Nullable Integer workOrderId, @Nullable String workOrderLabel, Record360Interface record360Interface);
 ```
     
 Depending on the state of the inspection in the workflow, the user will either be prompted to create a new inspection or resume their already existing inspection.
@@ -211,6 +211,10 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.18-5 (March 12th, 2025)
+-  New SDK Items
+  -  Fixed task issue that was incorrectly pulling draft data
+
 ## Version 4.18-4 (Mar 10th, 2025)
 -  Update Android Gradle Plugin to 8.5.2
 -  Update Kotlin Gradle Plugin to 2.0.21
