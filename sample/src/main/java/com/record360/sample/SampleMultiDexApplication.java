@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDexApplication;
 
 import com.record360.sdk.Record360SDK;
+import com.record360.sdk.Record360Setting;
 
 
 public class SampleMultiDexApplication extends MultiDexApplication {
@@ -36,27 +37,27 @@ public class SampleMultiDexApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Record360SDK.Setting[] settings = new Record360SDK.Setting[]{
-                new Record360SDK.Setting(SETTING_UPLOAD_MODE, UPLOAD_MODE_ONLINE, true),
-                new Record360SDK.Setting(SETTING_RESOLUTION, RESOLUTION_MEDIUM, true),
-                new Record360SDK.Setting(SETTING_COMPRESS_MEDIA, Boolean.toString(true), true),
-                new Record360SDK.Setting(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_ENABLE_MULTIPLE_CAMERA, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_LEGACY_CAMERA, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_RECORD_AUDIO, Boolean.toString(true), true),
-                new Record360SDK.Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
-                new Record360SDK.Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_LICENSE_REGION, REGION_UNITED_STATES, true),
-                new Record360SDK.Setting(SETTING_SHOW_INTRO_VIDEO),
-                new Record360SDK.Setting(SETTING_SEND_SUPPORT_LOG),
-                new Record360SDK.Setting(SETTING_ACCOUNT),
-                new Record360SDK.Setting(SETTING_LOGOUT),
-                new Record360SDK.Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_access_records), "https://www.record360.com"),
-                new Record360SDK.Setting(SETTING_RATE_RECORD360),
-                new Record360SDK.Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_terms_of_service), "https://www.record360.com/terms"),
-                new Record360SDK.Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_privacy_policy), "https://www.record360.com/privacy"),
-                new Record360SDK.Setting(SETTING_VERSION)
+        Record360Setting[] settings = new Record360Setting[]{
+                new Record360Setting(SETTING_UPLOAD_MODE, UPLOAD_MODE_ONLINE, true),
+                new Record360Setting(SETTING_RESOLUTION, RESOLUTION_MEDIUM, true),
+                new Record360Setting(SETTING_COMPRESS_MEDIA, Boolean.toString(true), true),
+                new Record360Setting(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
+                new Record360Setting(SETTING_ENABLE_MULTIPLE_CAMERA, Boolean.toString(false), true),
+                new Record360Setting(SETTING_LEGACY_CAMERA, Boolean.toString(false), true),
+                new Record360Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
+                new Record360Setting(SETTING_RECORD_AUDIO, Boolean.toString(true), true),
+                new Record360Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
+                new Record360Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
+                new Record360Setting(SETTING_LICENSE_REGION, REGION_UNITED_STATES, true),
+                new Record360Setting(SETTING_SHOW_INTRO_VIDEO),
+                new Record360Setting(SETTING_SEND_SUPPORT_LOG),
+                new Record360Setting(SETTING_ACCOUNT),
+                new Record360Setting(SETTING_LOGOUT),
+                new Record360Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_access_records), "https://www.record360.com"),
+                new Record360Setting(SETTING_RATE_RECORD360),
+                new Record360Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_terms_of_service), "https://www.record360.com/terms"),
+                new Record360Setting(SETTING_LINKS, getString(com.record360.sdk.R.string.setting_privacy_policy), "https://www.record360.com/privacy"),
+                new Record360Setting(SETTING_VERSION)
         };
 
         Record360SDK.initialize(getApplicationContext(), settings);

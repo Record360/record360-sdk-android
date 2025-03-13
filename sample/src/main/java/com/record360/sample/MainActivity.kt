@@ -7,9 +7,11 @@ import android.view.View
 import android.widget.Toast
 import com.record360.R
 import com.record360.databinding.ActivityMainBinding
+import com.record360.sdk.IRecord360Interface
+import com.record360.sdk.R360Identity
 import timber.log.Timber
 
-class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
+class MainActivity : Record360Activity(), IRecord360Interface {
     private lateinit var binding: ActivityMainBinding
     private var intentMode = IntentMode.Unit
     private enum class IntentMode {
@@ -27,7 +29,8 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
             val username = binding.sampleUsername.text.toString()
             val password = binding.samplePassword.text.toString()
             if (username.isNotEmpty() && password.isNotEmpty()) {
-                authenticateAndStart(this, username, password, getUnitId(), this)
+                val identity = R360Identity.PasswordIdentity(username, password)
+                startRecord360WithIdentity(this, identity, getUnitId(), null, null, this)
             } else {
                 Toast.makeText(this, "Please enter username and password", Toast.LENGTH_LONG).show()
             }
@@ -43,7 +46,7 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
             if (intentMode == IntentMode.Task) {
                 startWithTaskId(this, binding.taskId.text.toString(), this)
             } else {
-                startWithLogin(this, getUnitId(), null, getWOId(), getWOLabel(), this)
+                startRecord360(this, getUnitId(), getWOId(), getWOLabel(), null, this)
             }
         }
         binding.possibleIntentsGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -77,11 +80,11 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
     private fun handleAuthenticatedStart(userId: String?, token: String?) {
         if (intentMode == IntentMode.Task) {
             startWithTaskId(this, binding.taskId.text.toString(), this)
-        } else {
-            authenticatedStart(
+        } else if (token != null) {
+            val identity = R360Identity.UserTokenIdentity(userId, token)
+            startRecord360WithIdentity(
                 this,
-                userId,
-                token!!,
+                identity,
                 getUnitId(),
                 getWOId(),
                 getWOLabel(),
@@ -146,6 +149,6 @@ class MainActivity : Record360Activity(), Record360Activity.Record360Interface {
 
     override fun onDestroy() {
         super.onDestroy()
-        stop(this)
+        stopBroadcastReceiver(this)
     }
 }
