@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.18--5-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.18-5)
+[![Version](https://img.shields.io/badge/Record360SDK-4.19-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.19)
 
 Record360 Android SDK
 ==================
 
-Last updated on – Mar 12th, 2025
+Last updated on – Mar 13th, 2025
 
 # Introduction
 
@@ -79,7 +79,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
     }
 
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.18-5'
+        implementation 'com.record360.sdk:android-sdk:4.19'
         implementation 'androidx.multidex:multidex:2.0.1'
         coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     }
@@ -156,29 +156,36 @@ Also, designate a Record360Interface that will handle SDK inspection events.
 The session information will be sent from the SDK to the Record360Interface you supply as a parameter to the different start functions available in the Record360Activity. Above is an example of starting the workflow using our provided in login UI.
 
 The start functions are as follows:
+
 ```java
-    startWithLogin(Context context, @Nullable String referenceNumber, Record360Interface record360Interface);
-    authenticateAndStart(Context context, final String username, final String password, @Nullable String referenceNumber, Record360Interface record360Interface);
-    authenticatedStart(Context context, final String userId, final String token, @Nullable final String referenceNumber, Record360Interface record360Interface);
-    authenticatedStart(Context context, String userId, String token, @Nullable String referenceNum, @Nullable Integer workOrderId, @Nullable String workOrderLabel, Record360Interface record360Interface);
+startRecord360(Context context, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername, @Nullable Record360Interface r360Interface);
+startRecord360WithIdentity(Context context, R360Identity r360Identity, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername, @Nullable Record360Interface r360Interface);
+startWithTaskId(Context context, @Nullable String taskId, @Nullable Record360Interface r360Interface);
+
+```
+
+In order to pass in credentials when starting Record360, you must now use the class R360Identity
+```java
+    val passwordIdentity = new R360Identity.PasswordIdentity(username, password);
+    val tokenIdentity = new R360Identity.UserTokenIdentity(userId, userToken);
 ```
     
 Depending on the state of the inspection in the workflow, the user will either be prompted to create a new inspection or resume their already existing inspection.
 
 ### Adding workflow settings
 ```java
-	  Record360SDK.Setting[] sdkSettings = new Record360SDK.Setting[]{
-                new Record360SDK.Setting(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
-                new Record360SDK.Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
-                new Record360SDK.Setting(SETTING_RESOLUTION, RESOLUTION_HIGH, true),
-                new Record360SDK.Setting(SETTING_UPLOAD_MODE, UPLOAD_MODE_ONLINE, true),
-                new Record360SDK.Setting(SETTING_SEND_SUPPORT_LOG),
-                new Record360SDK.Setting(SETTING_LOGOUT),
-                new Record360SDK.Setting(SETTING_RATE_RECORD360),
-                new Record360SDK.Setting(SETTING_LINKS, "Privacy Policy", "https://www.record360.com/privacy"),
-                new Record360SDK.Setting(SETTING_VERSION)
+	  Record360Setting[] sdkSettings = new Record360Setting[]{
+                new Record360Settingg(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
+                new Record360Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
+                new Record360Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
+                new Record360Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
+                new Record360Setting(SETTING_RESOLUTION, RESOLUTION_HIGH, true),
+                new Record360Setting(SETTING_UPLOAD_MODE, UPLOAD_MODE_ONLINE, true),
+                new Record360Setting(SETTING_SEND_SUPPORT_LOG),
+                new Record360Setting(SETTING_LOGOUT),
+                new Record360Setting(SETTING_RATE_RECORD360),
+                new Record360Setting(SETTING_LINKS, "Privacy Policy", "https://www.record360.com/privacy"),
+                new Record360Setting(SETTING_VERSION)
         };
 ```
 
@@ -211,6 +218,13 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.19
+- Breaking interface changes
+    - Updates to start functions
+    - Addition of R360Identity
+    - Record360SDK.Setting is now Record360Setting
+    - Record360SDK.Record360Interface is now IRecord360Interface
+
 ## Version 4.18-5 (March 12th, 2025)
 -  New SDK Items
   -  Fixed task issue that was incorrectly pulling draft data
