@@ -79,6 +79,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     androidTestImplementation 'androidx.multidex:multidex:2.0.1'
     androidTestImplementation 'androidx.multidex:multidex-instrumentation:2.0.0'
-    implementation 'com.record360.sdk:android-sdk:4.19'
+    implementation 'com.record360.sdk:android-sdk:4.19.1'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
