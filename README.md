@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.19-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.19)
+[![Version](https://img.shields.io/badge/Record360SDK-4.19.1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.19.1)
 
 Record360 Android SDK
 ==================
 
-Last updated on – Mar 13th, 2025
+Last updated on – Mar 17th, 2025
 
 # Introduction
 
@@ -79,7 +79,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
     }
 
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.19'
+        implementation 'com.record360.sdk:android-sdk:4.19.1'
         implementation 'androidx.multidex:multidex:2.0.1'
         coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     }
@@ -218,7 +218,7 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
-## Version 4.19
+## Version 4.19.1 (March 17th, 2025)
 - Breaking interface changes
     - Updates to start functions
     - Addition of R360Identity
