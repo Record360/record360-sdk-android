@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.19.1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.19.1)
+[![Version](https://img.shields.io/badge/Record360SDK-4.19.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.19.3)
 
 Record360 Android SDK
 ==================
 
-Last updated on – Mar 17th, 2025
+Last updated on – July 25th, 2025
 
 # Introduction
 
@@ -79,7 +79,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
     }
 
     dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.19.1'
+        implementation 'com.record360.sdk:android-sdk:4.19.3'
         implementation 'androidx.multidex:multidex:2.0.1'
         coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     }
@@ -176,7 +176,6 @@ Depending on the state of the inspection in the workflow, the user will either b
 ```java
 	  Record360Setting[] sdkSettings = new Record360Setting[]{
                 new Record360Settingg(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
-                new Record360Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
                 new Record360Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
                 new Record360Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
                 new Record360Setting(SETTING_RESOLUTION, RESOLUTION_HIGH, true),
@@ -208,7 +207,7 @@ After the inspection has finished or is cancelled by the user, one of the callba
 
 When the Record360SDK has finished uploading a inspection, on of the callback methods below will be called.
 ```java
-	public void onInspectionUploaded(String referenceNumber);
+	public void onInspectionUploaded(String referenceNumber, String inspectionJson);
 	public void onInspectionUploadFailed(String referenceNumber);
 ```
   
@@ -218,6 +217,15 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.19.3 (July 25th, 2025)
+- Breaking interface change
+  - callback function onInspectionUploaded now returns inspection Json data
+    ```java
+	    public void onInspectionUploaded(String referenceNumber, String inspectionJson);
+    ```
+- New SDK items
+  - Wide Angle Camera Support
+
 ## Version 4.19.1 (March 17th, 2025)
 - Breaking interface changes
     - Updates to start functions

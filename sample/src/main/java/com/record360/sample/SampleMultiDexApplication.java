@@ -3,8 +3,6 @@ package com.record360.sample;
 import static com.record360.sdk.Record360SDK.REGION_UNITED_STATES;
 import static com.record360.sdk.Record360SDK.RESOLUTION_MEDIUM;
 import static com.record360.sdk.Record360SDK.SETTING_ACCOUNT;
-import static com.record360.sdk.Record360SDK.SETTING_COMPRESS_MEDIA;
-import static com.record360.sdk.Record360SDK.SETTING_ENABLE_MULTIPLE_CAMERA;
 import static com.record360.sdk.Record360SDK.SETTING_LEGACY_CAMERA;
 import static com.record360.sdk.Record360SDK.SETTING_LICENSE_REGION;
 import static com.record360.sdk.Record360SDK.SETTING_LINKS;
@@ -19,7 +17,6 @@ import static com.record360.sdk.Record360SDK.SETTING_SHOW_INTRO_VIDEO;
 import static com.record360.sdk.Record360SDK.SETTING_TIMESTAMP_MODE;
 import static com.record360.sdk.Record360SDK.SETTING_UPLOAD_MODE;
 import static com.record360.sdk.Record360SDK.SETTING_VERSION;
-import static com.record360.sdk.Record360SDK.SETTING_VIN_SCAN;
 import static com.record360.sdk.Record360SDK.UPLOAD_MODE_ONLINE;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -40,11 +37,8 @@ public class SampleMultiDexApplication extends MultiDexApplication {
         Record360Setting[] settings = new Record360Setting[]{
                 new Record360Setting(SETTING_UPLOAD_MODE, UPLOAD_MODE_ONLINE, true),
                 new Record360Setting(SETTING_RESOLUTION, RESOLUTION_MEDIUM, true),
-                new Record360Setting(SETTING_COMPRESS_MEDIA, Boolean.toString(true), true),
                 new Record360Setting(SETTING_NOTATIONS_ON_IMAGES, Boolean.toString(false), true),
-                new Record360Setting(SETTING_ENABLE_MULTIPLE_CAMERA, Boolean.toString(false), true),
                 new Record360Setting(SETTING_LEGACY_CAMERA, Boolean.toString(false), true),
-                new Record360Setting(SETTING_VIN_SCAN, Boolean.toString(false), true),
                 new Record360Setting(SETTING_RECORD_AUDIO, Boolean.toString(true), true),
                 new Record360Setting(SETTING_TIMESTAMP_MODE, Boolean.toString(true), true),
                 new Record360Setting(SETTING_NATIVE_RESOLUTION, Boolean.toString(false), true),
