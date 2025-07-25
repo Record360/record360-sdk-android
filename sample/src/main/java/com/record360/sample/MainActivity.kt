@@ -139,7 +139,7 @@ class MainActivity : Record360Activity(), IRecord360Interface {
         Log.i("MainActivity","Inspection $referenceNumber upload progress $complete/$total bytes")
     }
 
-    override fun onInspectionUploaded(referenceNumber: String?) {
+    override fun onInspectionUploaded(referenceNumber: String?, inspectionJson: String?) {
         Log.i("MainActivity","Inspection $referenceNumber uploaded")
     }
 
