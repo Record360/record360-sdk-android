@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.19.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.19.3)
+[![Version](https://img.shields.io/badge/Record360SDK-4.24.0-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.24.0)
 
 Record360 Android SDK
 ==================
@@ -16,7 +16,7 @@ The Record360SDK is an Android Library that allows mobile clients to embed [Reco
 
 # Example
 
-To run the example project, clone the repo, and open in Android Studio. Click Run in IDE UI or run via the terminal by running 'gradlew assembleDebug' from the project directory.
+To run the example project, clone the repo, and open in Android Studio. Click Run in IDE UI or run via the terminal by running './gradlew assembleDebug' from the project directory.
 
 # Installation with Gradle
 
@@ -36,7 +36,7 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
         }
 
         dependencies {
-            classpath 'com.android.tools.build:gradle:8.5.2'
+            classpath 'com.android.tools.build:gradle:8.11.2'
             classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21'
         }
     }
@@ -62,26 +62,35 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 Modify your App build.gradle (App Level) file in which you want to import the SDK with the following lines.
 ```groovy
     android {
-	...
-    packagingOptions {
-        jniLibs {
-            pickFirsts += ['lib/x86/libc++_shared.so', 'lib/x86_64/libc++_shared.so', 'lib/armeabi-v7a/libc++_shared.so', 'lib/arm64-v8a/libc++_shared.so']
+        defaultConfig {
+            manifestPlaceholders = [
+                    appAuthRedirectScheme: "sample",
+            ]
         }
-    }
-	compileOptions {
+    
+        packagingOptions {
+            jniLibs {
+                pickFirsts += ['lib/x86/libc++_shared.so', 'lib/x86_64/libc++_shared.so', 'lib/armeabi-v7a/libc++_shared.so', 'lib/arm64-v8a/libc++_shared.so']
+                excludes += ["**/libconceal.so"]
+                useLegacyPackaging = true
+            }
+        }
+    
+        compileOptions {
             sourceCompatibility JavaVersion.VERSION_17
             targetCompatibility JavaVersion.VERSION_17
             coreLibraryDesugaringEnabled true
-	}
-	kotlinOptions {
+        }
+    
+        kotlinOptions {
             jvmTarget = "17"
-    	}
-    }
-
-    dependencies {
-        implementation 'com.record360.sdk:android-sdk:4.19.3'
-        implementation 'androidx.multidex:multidex:2.0.1'
-        coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+        }
+        
+        dependencies {
+            implementation 'com.record360.sdk:android-sdk:4.24.0'
+            implementation 'androidx.multidex:multidex:2.0.1'
+            coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+        }
     }
 ```    
 
@@ -131,13 +140,44 @@ Add multidex flag to defaultConfig section in the module's build.gradle file
 Initialize a Record360SDK. This can be done at the Application level or within an Activity.
 ```java
 
-    public class SampleMultiDexApplication extends MultidexApplication {
-        public void onCreate() {
-            super.onCreate();
-            Record360SDK.Setting[] settings = ...
-            Record360SDK.initialize(getApplicationContext(), settings);
-        }
+public class SampleMultiDexApplication extends MultidexApplication {
+    public void onCreate() {
+        super.onCreate();
+        // OPTIONAL: for automatic android EdgeToEdge compatibility
+        // Use if SDK views are overlapping with status bars
+        EdgeToEdgeInitializer.INSTANCE.register(this);
+        Record360SDK.Setting[] settings = ...
+        Record360SDK.initialize(getApplicationContext(), settings);
     }
+}
+```
+```kotlin
+class SampleMultiDexApplication : MultiDexApplication() {
+    override fun onCreate() {
+        super.onCreate()
+        // OPTIONAL: for automatic android EdgeToEdge compatibility
+        // Use if SDK views are overlapping with status bars
+        EdgeToEdgeInitializer.register(this)
+        val settings: Array<Record360Setting> = arrayOf(
+            Record360Setting(SETTING_UPLOAD_MODE, UPLOAD_MODE_ONLINE, true),
+            Record360Setting(SETTING_RESOLUTION, RESOLUTION_MEDIUM, true),
+            Record360Setting(SETTING_NOTATIONS_ON_IMAGES, false.toString(), true),
+            Record360Setting(SETTING_LEGACY_CAMERA, false.toString(), true),
+            Record360Setting(SETTING_RECORD_AUDIO, true.toString(), true),
+            Record360Setting(SETTING_TIMESTAMP_MODE, true.toString(), true),
+            Record360Setting(SETTING_NATIVE_RESOLUTION, false.toString(), true),
+            Record360Setting(SETTING_LICENSE_REGION, REGION_UNITED_STATES, true),
+            Record360Setting(SETTING_SHOW_INTRO_VIDEO),
+            Record360Setting(SETTING_SEND_SUPPORT_LOG),
+            Record360Setting(SETTING_ACCOUNT),
+            Record360Setting(SETTING_LOGOUT),
+            Record360Setting(SETTING_RATE_RECORD360),
+            Record360Setting(SETTING_VERSION)
+        )
+
+        initialize(getApplicationContext(), settings)
+    }
+}
 ```
 
 ### Entering the workflow
@@ -217,6 +257,29 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.24.0 (Feb 11th, 2025)
+- Upgraded Build Tools Gradle Version to 8.11.2
+- Upgraded Android Target SDK Version to 35
+- Added EdgeToEdgeInitializer class to support Android API Level 35+
+- Please update your default config with the following placeholder
+```groovy
+defaultConfig {
+    manifestPlaceholders = [
+        appAuthRedirectScheme: "sample",
+    ]
+}
+```
+- 16KB alignment (Please update your build.gradle file with new packaging options)
+```groovy
+    packagingOptions {
+        jniLibs {
+            pickFirsts += ['lib/x86/libc++_shared.so', 'lib/x86_64/libc++_shared.so', 'lib/armeabi-v7a/libc++_shared.so', 'lib/arm64-v8a/libc++_shared.so']
+            excludes += ["**/libconceal.so"]
+            useLegacyPackaging = true
+        }
+    }
+```
+
 ## Version 4.19.3 (July 25th, 2025)
 - Breaking interface change
   - callback function onInspectionUploaded now returns inspection Json data
