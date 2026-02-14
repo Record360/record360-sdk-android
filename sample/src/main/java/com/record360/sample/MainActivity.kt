@@ -9,6 +9,7 @@ import com.record360.R
 import com.record360.databinding.ActivityMainBinding
 import com.record360.sdk.IRecord360Interface
 import com.record360.sdk.R360Identity
+import com.record360.sdk.Record360SDK
 import timber.log.Timber
 
 class MainActivity : Record360Activity(), IRecord360Interface {
@@ -24,13 +25,14 @@ class MainActivity : Record360Activity(), IRecord360Interface {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Record360SDK.r360Interface = this
         val sharedPreferences = getSharedPreferences("com.record360.ui.prefs", MODE_PRIVATE)
         binding.sampleSignIn.setOnClickListener {
             val username = binding.sampleUsername.text.toString()
             val password = binding.samplePassword.text.toString()
             if (username.isNotEmpty() && password.isNotEmpty()) {
                 val identity = R360Identity.PasswordIdentity(username, password)
-                startRecord360WithIdentity(this, identity, getUnitId(), null, null, this)
+                startRecord360WithIdentity(this, identity, getUnitId(), null, null)
             } else {
                 Toast.makeText(this, "Please enter username and password", Toast.LENGTH_LONG).show()
             }
@@ -44,9 +46,9 @@ class MainActivity : Record360Activity(), IRecord360Interface {
         }
         binding.sdkSignIn.setOnClickListener {
             if (intentMode == IntentMode.Task) {
-                startWithTaskId(this, binding.taskId.text.toString(), this)
+                startWithTaskId(this, binding.taskId.text.toString())
             } else {
-                startRecord360(this, getUnitId(), getWOId(), getWOLabel(), null, this)
+                startRecord360(this, getUnitId(), getWOId(), getWOLabel(), null)
             }
         }
         binding.possibleIntentsGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -79,7 +81,7 @@ class MainActivity : Record360Activity(), IRecord360Interface {
 
     private fun handleAuthenticatedStart(userId: String?, token: String?) {
         if (intentMode == IntentMode.Task) {
-            startWithTaskId(this, binding.taskId.text.toString(), this)
+            startWithTaskId(this, binding.taskId.text.toString())
         } else if (token != null) {
             val identity = R360Identity.UserTokenIdentity(userId, token)
             startRecord360WithIdentity(
@@ -87,8 +89,7 @@ class MainActivity : Record360Activity(), IRecord360Interface {
                 identity,
                 getUnitId(),
                 getWOId(),
-                getWOLabel(),
-                this
+                getWOLabel()
             )
         }
     }
@@ -149,6 +150,6 @@ class MainActivity : Record360Activity(), IRecord360Interface {
 
     override fun onDestroy() {
         super.onDestroy()
-        stopBroadcastReceiver(this)
+        Record360SDK.r360Interface = null
     }
 }

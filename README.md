@@ -184,13 +184,21 @@ class SampleMultiDexApplication : MultiDexApplication() {
 
 Create an Activity that will extend the Record360Activity. This will give you access to commands needed to enter the workflow.
 Also, designate a Record360Interface that will handle SDK inspection events.
-```java
-    public class MainActivity extends Record360Activity implements Record360Interface {
-        @Override
-        public void onCreate() {
-            start(this, this);
-        }
+You can implement this on an Activity that launches our SDK or an application object
+```kotlin
+class MainActivity : Record360Activity(), IRecord360Interface {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        Record360SDK.r360Interface = this
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Record360SDK.r360Interface = null
+    }
+}
 ```
     
 The session information will be sent from the SDK to the Record360Interface you supply as a parameter to the different start functions available in the Record360Activity. Above is an example of starting the workflow using our provided in login UI.
@@ -198,9 +206,9 @@ The session information will be sent from the SDK to the Record360Interface you 
 The start functions are as follows:
 
 ```java
-startRecord360(Context context, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername, @Nullable Record360Interface r360Interface);
-startRecord360WithIdentity(Context context, R360Identity r360Identity, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername, @Nullable Record360Interface r360Interface);
-startWithTaskId(Context context, @Nullable String taskId, @Nullable Record360Interface r360Interface);
+startRecord360(Context context, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername);
+startRecord360WithIdentity(Context context, R360Identity r360Identity, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername);
+startWithTaskId(Context context, @Nullable String taskId);
 
 ```
 
@@ -230,7 +238,8 @@ Depending on the state of the inspection in the workflow, the user will either b
 
 ### Responding to workflow events
 
-Implement the Record360Interface to respond to workflow events.
+Implement the IRecord360Interface to respond to workflow events.
+
 To respond to user login events use the Record360Interface callback methods below.
 ```java
 	public void onUserAuthenticated(final String username, final String userId, final String token);
@@ -279,6 +288,9 @@ defaultConfig {
         }
     }
 ```
+- New SDK items
+    - License Plate Scanner
+    - User Groups
 
 ## Version 4.19.3 (July 25th, 2025)
 - Breaking interface change
