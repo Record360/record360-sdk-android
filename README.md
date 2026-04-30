@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.24.0-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.24.0)
+[![Version](https://img.shields.io/badge/Record360SDK-4.25.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.25.3)
 
 Record360 Android SDK
 ==================
 
-Last updated on – July 25th, 2025
+Last updated on – April 30, 2026
 
 # Introduction
 
@@ -87,7 +87,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
         }
         
         dependencies {
-            implementation 'com.record360.sdk:android-sdk:4.24.0'
+            implementation 'com.record360.sdk:android-sdk:4.25.3'
             implementation 'androidx.multidex:multidex:2.0.1'
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
         }
@@ -206,8 +206,8 @@ The session information will be sent from the SDK to the Record360Interface you 
 The start functions are as follows:
 
 ```java
-startRecord360(Context context, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername);
-startRecord360WithIdentity(Context context, R360Identity r360Identity, @Nullable String referenceNumber, @Nullable Integer workOrderId, @Nullable String workOrderLabel, @Nullable String loginUsername);
+startRecord360(Context context, @Nullable String referenceNumber, @Nullable String department, @Nullable String sequence, @Nullable String loginUsername);
+startRecord360WithIdentity(Context context, R360Identity r360Identity, @Nullable String referenceNumber, @Nullable String department, @Nullable String sequence, @Nullable String loginUsername);
 startWithTaskId(Context context, @Nullable String taskId);
 
 ```
@@ -266,7 +266,16 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
-## Version 4.24.0 (Feb 11th, 2025)
+## Version 4.25.3 (April 30, 2026)
+- Start functions updated
+  - Work Order Parameters removed due to deprecation
+  - Department id or name now supported as a parameter
+  - Sequence id or name now supported as a parameter
+- New SDK Items
+  - Bug fixes
+  - Improved Integrations
+
+## Version 4.24.0 (Feb 11th, 2026)
 - Upgraded Build Tools Gradle Version to 8.11.2
 - Upgraded Android Target SDK Version to 35
 - Added EdgeToEdgeInitializer class to support Android API Level 35+
