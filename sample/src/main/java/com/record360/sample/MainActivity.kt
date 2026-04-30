@@ -14,11 +14,10 @@ import timber.log.Timber
 
 class MainActivity : Record360Activity(), IRecord360Interface {
     private lateinit var binding: ActivityMainBinding
-    private var intentMode = IntentMode.Unit
+    private var intentMode = IntentMode.Inspection
     private enum class IntentMode {
-        Unit,
-        Task,
-        WorkOrder
+        Inspection,
+        Task
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +31,7 @@ class MainActivity : Record360Activity(), IRecord360Interface {
             val password = binding.samplePassword.text.toString()
             if (username.isNotEmpty() && password.isNotEmpty()) {
                 val identity = R360Identity.PasswordIdentity(username, password)
-                startRecord360WithIdentity(this, identity, getUnitId(), null, null)
+                startRecord360WithIdentity(this, identity, getUnitId(), getDepartment(), getSequence())
             } else {
                 Toast.makeText(this, "Please enter username and password", Toast.LENGTH_LONG).show()
             }
@@ -48,35 +47,33 @@ class MainActivity : Record360Activity(), IRecord360Interface {
             if (intentMode == IntentMode.Task) {
                 startWithTaskId(this, binding.taskId.text.toString())
             } else {
-                startRecord360(this, getUnitId(), getWOId(), getWOLabel(), null)
+                startRecord360(this, getUnitId(), getDepartment(), getSequence(), null)
             }
         }
         binding.possibleIntentsGroup.setOnCheckedChangeListener { _, checkedId ->
             intentMode = when (checkedId) {
-                R.id.unit_intent_button -> IntentMode.Unit
                 R.id.task_intent_button -> IntentMode.Task
-                else -> IntentMode.WorkOrder
+                else -> IntentMode.Inspection
             }
-            binding.unitId.visibility = if (checkedId == R.id.unit_intent_button || checkedId == R.id.wo_intent_button)
-                View.VISIBLE else View.GONE
             binding.taskId.visibility = if (checkedId == R.id.task_intent_button) View.VISIBLE else View.GONE
-            binding.woDetailsLayout.visibility = if (checkedId == R.id.wo_intent_button) View.VISIBLE else View.GONE
+            binding.inspectionDetailsLayout.visibility = if (checkedId == R.id.inspection_intent_button) View.VISIBLE else View.GONE
         }
     }
 
     private fun getUnitId(): String? {
         val text = binding.unitId.text.toString()
-        return if (intentMode == IntentMode.Unit && text.isNotEmpty()) text else null
+        return if (intentMode == IntentMode.Inspection && text.isNotEmpty()) text else null
     }
 
-    private fun getWOId(): Int? {
-        val id = binding.woId.text.toString().toIntOrNull()
-        return if (intentMode == IntentMode.WorkOrder && id != null) id else null
+    private fun getDepartment(): String? {
+        val department = binding.department.text.toString()
+        Timber.i("Department $department")
+        return if (intentMode == IntentMode.Inspection && department.isNotEmpty()) department else null
     }
 
-    private fun getWOLabel(): String? {
-        val label = binding.woLabel.text.toString()
-        return if (intentMode == IntentMode.WorkOrder && label.isNotEmpty()) label else null
+    private fun getSequence(): String? {
+        val sequence = binding.sequence.text.toString()
+        return if (intentMode == IntentMode.Inspection && sequence.isNotEmpty()) sequence else null
     }
 
     private fun handleAuthenticatedStart(userId: String?, token: String?) {
@@ -88,8 +85,8 @@ class MainActivity : Record360Activity(), IRecord360Interface {
                 this,
                 identity,
                 getUnitId(),
-                getWOId(),
-                getWOLabel()
+                getDepartment(),
+                getSequence()
             )
         }
     }
