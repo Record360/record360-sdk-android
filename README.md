@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.25.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.25.3)
+[![Version](https://img.shields.io/badge/Record360SDK-4.26.0-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.26.0)
 
 Record360 Android SDK
 ==================
 
-Last updated on – April 30, 2026
+Last updated on – June 15th, 2026
 
 # Introduction
 
@@ -44,12 +44,12 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
     allprojects {
         repositories {
             mavenCentral()
-            maven { url 'https://maven.scijava.org/content/repositories/public/' }
-            maven { url 'https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/' }
-            maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
-            maven { url 'https://jitpack.io'}
             maven { url 'https://maven.google.com' }
-            maven { url 'https://customers.pspdfkit.com/maven/' }
+            maven { url 'https://maven.scijava.org/content/repositories/public/' }
+            maven { url 'https://raw.githubusercontent.com/iProov/android/master/maven/' }
+            maven { url 'https://raw.githubusercontent.com/Acuant/AndroidSdkMaven/main/maven/' }
+            maven { url 'https://jitpack.io'}
+            maven { url 'https://my.nutrient.io/maven/' }
             maven { url 'https://maven.pkg.github.com/Record360/record360-sdk-android'
                 credentials {
                     username GITHUB_USERNAME
@@ -87,7 +87,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
         }
         
         dependencies {
-            implementation 'com.record360.sdk:android-sdk:4.25.3'
+            implementation 'com.record360.sdk:android-sdk:4.26.0'
             implementation 'androidx.multidex:multidex:2.0.1'
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
         }
@@ -204,13 +204,35 @@ class MainActivity : Record360Activity(), IRecord360Interface {
 The session information will be sent from the SDK to the Record360Interface you supply as a parameter to the different start functions available in the Record360Activity. Above is an example of starting the workflow using our provided in login UI.
 
 The start functions are as follows:
-
+JAVA
 ```java
-startRecord360(Context context, @Nullable String referenceNumber, @Nullable String department, @Nullable String sequence, @Nullable String loginUsername);
-startRecord360WithIdentity(Context context, R360Identity r360Identity, @Nullable String referenceNumber, @Nullable String department, @Nullable String sequence, @Nullable String loginUsername);
+startRecord360(Context context, @Nullable String referenceNumber, @Nullable String department, @Nullable String sequence, @Nullable String loginUsername, @Nullable Map<String, Object> fieldData);
+startRecord360WithIdentity(Context context, R360Identity r360Identity, @Nullable String referenceNumber, @Nullable String department, @Nullable String sequence, @Nullable String loginUsername, @Nullable Map<String, Object> fieldData);
 startWithTaskId(Context context, @Nullable String taskId);
-
 ```
+KOTLIN
+```kotlin
+fun startRecord360(
+        context: Context,
+        referenceNumber: String?,
+        department: String?,
+        sequence: String?,
+        loginUsername: String?,
+        fieldData: Map<String, Any?>? = null
+    )
+fun startRecord360WithIdentity(
+    context: Context,
+    r360Identity: R360Identity,
+    referenceNumber: String?,
+    department: String?,
+    sequence: String?,
+    fieldData: Map<String, Any?>? = null
+)
+fun startWithTaskId(context: Context, taskId: String?)
+```
+The addition of fieldData will try to match map keys to checklist field ids or labels
+If the keys match and value is valid for checklist field, data should map automatically
+*note* any field data that does not match will be silently ignored
 
 In order to pass in credentials when starting Record360, you must now use the class R360Identity
 ```java
@@ -259,6 +281,147 @@ When the Record360SDK has finished uploading a inspection, on of the callback me
 	public void onInspectionUploaded(String referenceNumber, String inspectionJson);
 	public void onInspectionUploadFailed(String referenceNumber);
 ```
+Here is an example inspectionJson response:
+```json
+{
+  "id": "430",
+  "type": "open",
+  "unit": {
+    "id": "43",
+    "reference_number": "WMWRF33519TW73378"
+  },
+  "damage_present": false,
+  "dashboard_url": "https://dashboard.record360.com/dashboard/inspections/123",
+  "pdf_share_url": "https://app.record360.com/exports/30Ew8II5bNYaDwXt?code=123",
+  "user": {
+    "id": "120",
+    "username": "jdoe@record360.com"
+  },
+  "location": {
+    "id": "220",
+    "external_id": null,
+    "name": "Denver Branch"
+  },
+  "region": {
+    "id": "1",
+    "name": "Mountain West"
+  },
+  "department": {
+    "id": "1",
+    "name": "Rental"
+  },
+  "results": [
+    {
+      "name": "Basic Checklist",
+      "object": "checklist",
+      "data": [
+        {
+          "id": "odom1",
+          "type": "textbox",
+          "label": "Mileage",
+          "value": 120000
+        },
+        {
+          "id": "fuel1",
+          "type": "single_dropdown_list",
+          "label": "Fuel level",
+          "value": "7/8"
+        },
+        {
+          "type": "textbox",
+          "label": "Customer Name",
+          "value": "John Doe"
+        },
+        {
+          "type": "date_selector",
+          "label": "Inspection Date",
+          "value": "2025-01-31"
+        },
+        {
+          "type": "checkbox",
+          "label": "Attachments",
+          "items": [
+            {
+              "id": "rake1",
+              "label": "Rake Riddle",
+              "value": "true"
+            },
+            {
+              "id": "bucket1",
+              "label": "Quick Attach Bucket",
+              "value": "false"
+            }
+          ]
+        },
+        {
+          "id": "mpi1",
+          "type": "pass_fail",
+          "label": "Service Walkthrough",
+          "items": [
+            {
+              "id": "HLF1",
+              "label": "Headlights",
+              "value": "Pass"
+            },
+            {
+              "id": "BLR2",
+              "label": "Brake Lights",
+              "value": "Fail"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rental Contract",
+      "object": "pdf_form",
+      "link": "https://app.record360.com/v3/forms/1WwmZX857Zb6ASpv",
+      "data": {
+        "one": "two"
+      }
+    },
+    {
+      "name": "Collision Damage Waiver",
+      "object": "collision_damage_waiver",
+      "accepted": false
+    }
+  ],
+  "photos": [
+    {
+      "object": "photo",
+      "url": "https://media.record360.com/inspections/430/images/1c4bdd32-aa80-4355-a6aa-c56ed4c4102d",
+      "instruction": {
+        "id": "abc123",
+        "label": "Take a photo of the left side"
+      },
+      "field": null
+    }
+  ],
+  "videos": [
+    {
+      "object": "video",
+      "url": "https://media.record360.com/inspections/430/videos/5f8a21e9-8600-4b73-9d27-e296c83e939a"
+    }
+  ],
+  "signatures": [
+    {
+      "object": "signature",
+      "type": "inspection",
+      "label": "Signed By",
+      "printed_name": "John Doe",
+      "url": "https://media.record360.com/inspections/430/signatures/61b5af9d-b399-4113-8bb0-728f30f12424"
+    },
+    {
+      "object": "signature",
+      "type": "esign",
+      "signed_at": "2026-01-30T06:55:31.441Z",
+      "url": "https://media.record360.com/inspections/430/signatures/61b5af9d-b399-4113-8bb0-728f30f12424"
+    }
+  ],
+  "created_at": "2014-04-01T19:00:00.000Z",
+  "updated_at": "2014-04-01T19:00:00.000Z"
+}
+```
   
 Upload progress can also be monitored in the callback shown below.
 ```java
@@ -266,6 +429,20 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.26.0 (June 15th, 2026)
+- Update targetSdk and compileSdk to 36
+- Breaking Change to onInspectionUploaded call back
+  - Will now receive new format for inspectionJson (see above for example)
+- Start functions updated
+  - New field data parameter on start functions that will allow automapping to specified fields that match checklist items
+- Update to build.gradle repository url (changes needed)
+```groovy
+// OLD
+maven { url 'https://customers.pspdfkit.com/maven/' }
+// NEW
+maven { url 'https://my.nutrient.io/maven/' }
+```
+
 ## Version 4.25.3 (April 30, 2026)
 - Start functions updated
   - Work Order Parameters removed due to deprecation

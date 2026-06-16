@@ -11,9 +11,9 @@ android {
     defaultConfig {
         namespace 'com.record360'
         applicationId "com.record360.sample"
-        compileSdk 35
+        compileSdk 36
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -83,6 +83,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     androidTestImplementation 'androidx.multidex:multidex:2.0.1'
     androidTestImplementation 'androidx.multidex:multidex-instrumentation:2.0.0'
-    implementation 'com.record360.sdk:android-sdk:4.25.3'
+    implementation 'com.record360.sdk:android-sdk:4.26.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
