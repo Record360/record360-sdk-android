@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.26.0-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.26.0)
+[![Version](https://img.shields.io/badge/Record360SDK-4.26.1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.26.1)
 
 Record360 Android SDK
 ==================
@@ -87,7 +87,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
         }
         
         dependencies {
-            implementation 'com.record360.sdk:android-sdk:4.26.0'
+            implementation 'com.record360.sdk:android-sdk:4.26.1'
             implementation 'androidx.multidex:multidex:2.0.1'
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
         }
@@ -429,6 +429,10 @@ Upload progress can also be monitored in the callback shown below.
 ```
 
 # Changelog
+## Version 4.26.1 (June 22nd, 2026)
+- Bug fixes and performance improvements
+- License Scanner Fix
+
 ## Version 4.26.0 (June 15th, 2026)
 - Update targetSdk and compileSdk to 36
 - Breaking Change to onInspectionUploaded call back
