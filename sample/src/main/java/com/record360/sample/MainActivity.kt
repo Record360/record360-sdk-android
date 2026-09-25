@@ -91,20 +91,20 @@ class MainActivity : Record360Activity(), IRecord360Interface {
         }
     }
 
-    override fun onUserAuthenticated(username: String?, userId: String?, token: String?) {
-        Timber.i("User $username authenticated")
+    override fun onSuccessfulAuthentication(userToken: String, userId: String) {
+        Log.i("MainActivity","User $userId authenticated")
         val editor = getSharedPreferences("com.record360.ui.prefs", MODE_PRIVATE).edit()
         editor.putString("USER_ID", userId)
-        editor.putString("TOKEN", token)
+        editor.putString("TOKEN", userToken)
         editor.apply()
 
-        binding.existingSignIn.isEnabled = !userId.isNullOrEmpty() && !token.isNullOrEmpty()
+        binding.existingSignIn.isEnabled = userId.isNotEmpty() && userToken.isNotEmpty()
         binding.existingSignIn.setOnClickListener {
-            handleAuthenticatedStart(userId, token)
+            handleAuthenticatedStart(userId, userToken)
         }
     }
 
-    override fun onFailedToAuthenticate(credentialsAreValid: Boolean, error: String?) {
+    override fun onFailedAuthentication(error: Throwable) {
         Log.e("MainActivity", "Authentication error: $error")
     }
 
@@ -125,24 +125,48 @@ class MainActivity : Record360Activity(), IRecord360Interface {
         return contractFieldData
     }
 
-    override fun onInspectionComplete(referenceNumber: String?) {
-        Log.i("MainActivity","Inspection $referenceNumber complete")
+    override fun onInspectionComplete(refNum: String, inspectionNonce: String) {
+        Log.i("MainActivity","Inspection $refNum complete ($inspectionNonce)")
     }
 
-    override fun onInspectionCancelled(referenceNumber: String?) {
-        Log.i("MainActivity","Inspection $referenceNumber cancelled")
+    override fun onInspectionCancelled(refNum: String, inspectionNonce: String) {
+        Log.i("MainActivity","Inspection $refNum cancelled ($inspectionNonce)")
     }
 
-    override fun onInspectionUploadProgress(referenceNumber: String?, complete: Long, total: Long) {
-        Log.i("MainActivity","Inspection $referenceNumber upload progress $complete/$total bytes")
+    override fun onInspectionUploadProgress(
+        refNum: String,
+        inspectionNonce: String,
+        percentComplete: Double
+    ) {
+        Log.i("MainActivity","Inspection $refNum upload progress $percentComplete%")
     }
 
-    override fun onInspectionUploaded(referenceNumber: String?, inspectionJson: String?) {
-        Log.i("MainActivity","Inspection $referenceNumber uploaded")
+    override fun onInspectionUploaded(
+        refNum: String,
+        inspectionNonce: String,
+        inspectionJSON: String
+    ) {
+        Log.i("MainActivity","Inspection $refNum uploaded ($inspectionNonce)")
     }
 
-    override fun onInspectionUploadFailed(referenceNumber: String?, error: String?) {
-        Log.i("MainActivity","Inspection $referenceNumber failed to upload with error: $error")
+    override fun onInspectionUploadFailed(refNum: String, inspectionNonce: String, error: String) {
+        Log.i("MainActivity","Inspection $refNum ($inspectionNonce) failed to upload with error: $error")
+    }
+
+    override fun onInspectionStarted(refNum: String, inspectionNonce: String) {
+        Log.i("MainActivity","Inspection $refNum started ($inspectionNonce)")
+    }
+
+    override fun onInspectionUploadDeleted(refNum: String, inspectionNonce: String) {
+        Log.i("MainActivity","Inspection $refNum deleted from uploads ($inspectionNonce)")
+    }
+
+    override fun onSDKShouldExit() {
+        Log.i("MainActivity","Exited Record360 SDK")
+    }
+
+    override fun onSDKShouldRelaunch() {
+        Log.i("MainActivity","SDK requesting relaunch")
     }
 
     override fun onDestroy() {

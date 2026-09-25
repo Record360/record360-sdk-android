@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.26.1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.26.1)
+[![Version](https://img.shields.io/badge/Record360SDK-4.30.1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.30.1)
 
 Record360 Android SDK
 ==================
 
-Last updated on – June 15th, 2026
+Last updated on – September 25th, 2026
 
 # Introduction
 
@@ -11,8 +11,10 @@ The Record360SDK is an Android Library that allows mobile clients to embed [Reco
 
 # Requirements
 
--   Android OS 7.0+ (API level 24)
+-   Android OS 8.0+ (API level 26)
 -   ARM Architecture Device
+-   Kotlin Gradle plugin 2.1 or newer (2.2.0 recommended). The SDK is compiled with Kotlin 2.2 and older plugins cannot read its metadata.
+-   Android Gradle plugin 8.11.2 or newer
 
 # Example
 
@@ -37,7 +39,7 @@ Once you create PAT please insert your username and PAT in place of GITHUB_USERN
 
         dependencies {
             classpath 'com.android.tools.build:gradle:8.11.2'
-            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21'
+            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.0'
         }
     }
 
@@ -87,7 +89,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
         }
         
         dependencies {
-            implementation 'com.record360.sdk:android-sdk:4.26.1'
+            implementation 'com.record360.sdk:android-sdk:4.30.1'
             implementation 'androidx.multidex:multidex:2.0.1'
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
         }
@@ -260,27 +262,38 @@ Depending on the state of the inspection in the workflow, the user will either b
 
 ### Responding to workflow events
 
-Implement the IRecord360Interface to respond to workflow events.
+Implement the IRecord360Interface to respond to SDK events. Every inspection event carries the unit's reference number and an `inspectionNonce`: an opaque id that is unique per inspection and identical across all of that inspection's events, from `onInspectionStarted` through `onInspectionUploaded`. Reference numbers repeat across inspections of the same unit, so use the nonce to correlate.
 
-To respond to user login events use the Record360Interface callback methods below.
+Authentication:
 ```java
-	public void onUserAuthenticated(final String username, final String userId, final String token);
-	public void onInspectionCancelled(String referenceNumber);
+	public void onSuccessfulAuthentication(String userToken, String userId);
+	public void onFailedAuthentication(Throwable error);
 ```
 
-After the inspection has finished or is cancelled by the user, one of the callback methods below will be called.
+Inspection lifecycle. `onInspectionStarted` fires once the inspection has been created (including a resumed draft). One of `onInspectionComplete` or `onInspectionCancelled` follows. Cancelled fires whenever an in-progress inspection is discarded: the user deleted it, or it was cleared by a logout, an expired session, or a new launch for a different reference number or user.
 ```java
-	public void onInspectionComplete(String referenceNumber);
-	public void onInspectionCancelled(String referenceNumber);
+	public void onInspectionStarted(String refNum, String inspectionNonce);
+	public void onInspectionComplete(String refNum, String inspectionNonce);
+	public void onInspectionCancelled(String refNum, String inspectionNonce);
 ```
-  
+
+SDK lifecycle. Exactly one of these fires per launch, after any inspection event, once the SDK's screens have finished and control is back with your app.
+```java
+	public void onSDKShouldExit();
+	public void onSDKShouldRelaunch();
+```
+`onSDKShouldRelaunch` is only sent by the iOS SDK today; it is declared here so hosts can share one implementation across platforms. Both have default no-op implementations.
+
 ### Responding to inspection upload events
 
-When the Record360SDK has finished uploading a inspection, on of the callback methods below will be called.
+Uploads run in the background after `onInspectionComplete`, and continue if your app is backgrounded or restarted. When an upload finishes, one of the callback methods below will be called.
 ```java
-	public void onInspectionUploaded(String referenceNumber, String inspectionJson);
-	public void onInspectionUploadFailed(String referenceNumber);
+	public void onInspectionUploaded(String refNum, String inspectionNonce, String inspectionJSON);
+	public void onInspectionUploadFailed(String refNum, String inspectionNonce, String error);
+	public void onInspectionUploadDeleted(String refNum, String inspectionNonce);
 ```
+A failed upload stays queued and is retried automatically, except when media files are missing on the device. `onInspectionUploadDeleted` fires when the user removes a queued upload from the Uploads screen. `onInspectionUploadDeleted`, `onInspectionStarted`, `onSDKShouldExit` and `onSDKShouldRelaunch` have default implementations, so implement only the ones you need.
+
 Here is an example inspectionJson response:
 ```json
 {
@@ -423,12 +436,38 @@ Here is an example inspectionJson response:
 }
 ```
   
-Upload progress can also be monitored in the callback shown below.
+Upload progress can also be monitored in the callback shown below. `percentComplete` is a fraction from 0.0 to 1.0 of media bytes uploaded, reported about once per second while an upload is active, and never after `onInspectionUploaded` or `onInspectionUploadDeleted` for that nonce.
 ```java
-    public void onInspectionUploadProgress(String refNum, long complete, long total);
+    public void onInspectionUploadProgress(String refNum, String inspectionNonce, double percentComplete);
 ```
 
 # Changelog
+## Version 4.30.1 (September 25th, 2026)
+- Requirements changed (updates needed)
+  - Minimum Android version is now 8.0 (API level 26)
+  - Kotlin Gradle plugin 2.1 or newer is required; the SDK is compiled with Kotlin 2.2 (update the classpath in your project-level build.gradle, see above)
+- Breaking interface changes to IRecord360Interface: every inspection callback now carries the reference number and an `inspectionNonce` that is stable across all of one inspection's events
+  ```java
+  // OLD                                                                     // NEW
+  onUserAuthenticated(String username, String userId, String token)         onSuccessfulAuthentication(String userToken, String userId)
+  onFailedToAuthenticate(boolean credentialsAreValid, String error)         onFailedAuthentication(Throwable error)
+  onInspectionComplete(String referenceNumber)                              onInspectionComplete(String refNum, String inspectionNonce)
+  onInspectionCancelled(String referenceNumber)                             onInspectionCancelled(String refNum, String inspectionNonce)
+  onInspectionUploadProgress(String refNum, long complete, long total)      onInspectionUploadProgress(String refNum, String inspectionNonce, double percentComplete)
+  onInspectionUploaded(String referenceNumber, String inspectionJson)       onInspectionUploaded(String refNum, String inspectionNonce, String inspectionJSON)
+  onInspectionUploadFailed(String referenceNumber, String error)            onInspectionUploadFailed(String refNum, String inspectionNonce, String error)
+  ```
+- New callbacks (all with default no-op implementations)
+  - `onInspectionStarted(refNum, inspectionNonce)` once an inspection has been created
+  - `onInspectionUploadDeleted(refNum, inspectionNonce)` when the user removes a queued upload from the Uploads screen
+  - `onSDKShouldExit()` exactly once per launch, when the SDK hands control back to your app
+  - `onSDKShouldRelaunch()` declared for parity with the iOS SDK; not sent on Android
+- Behavior changes
+  - `onInspectionCancelled` now fires on every discard of an in-progress inspection, including logout, session expiry, and launching for a different reference number or user, not only the delete dialog
+  - `onInspectionUploaded` now passes the reference number; it previously passed an internal upload id
+  - `onInspectionUploadFailed` now carries the actual cause instead of a fixed message
+  - Upload progress is a 0.0 to 1.0 fraction and stops once an upload completes or is deleted; previously a final 0 of N could be reported after completion
+
 ## Version 4.26.1 (June 22nd, 2026)
 - Bug fixes and performance improvements
 - License Scanner Fix
