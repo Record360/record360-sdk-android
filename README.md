@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.30.1-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.30.1)
+[![Version](https://img.shields.io/badge/Record360SDK-4.30.2-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.30.2)
 
 Record360 Android SDK
 ==================
@@ -89,7 +89,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
         }
         
         dependencies {
-            implementation 'com.record360.sdk:android-sdk:4.30.1'
+            implementation 'com.record360.sdk:android-sdk:4.30.2'
             implementation 'androidx.multidex:multidex:2.0.1'
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
         }
@@ -277,7 +277,7 @@ Inspection lifecycle. `onInspectionStarted` fires once the inspection has been c
 	public void onInspectionCancelled(String refNum, String inspectionNonce);
 ```
 
-SDK lifecycle. Exactly one of these fires per launch, after any inspection event, once the SDK's screens have finished and control is back with your app.
+SDK lifecycle. Exactly one of these fires per launch, after any inspection event, once the SDK's screens have finished and control is back with your app. A launch whose supplied identity fails to authenticate never shows an SDK screen; it reports `onSDKShouldExit` once the login error dialog is dismissed.
 ```java
 	public void onSDKShouldExit();
 	public void onSDKShouldRelaunch();
@@ -442,6 +442,9 @@ Upload progress can also be monitored in the callback shown below. `percentCompl
 ```
 
 # Changelog
+## Version 4.30.2 (October 9th, 2026)
+- `onSDKShouldExit` now fires after the login error dialog is dismissed when the identity passed to `startRecord360WithIdentity` is rejected. Previously no exit was reported because no SDK screen had opened, leaving the host activity on screen.
+
 ## Version 4.30.1 (September 25th, 2026)
 - Requirements changed (updates needed)
   - Minimum Android version is now 8.0 (API level 26)
