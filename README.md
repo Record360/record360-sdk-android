@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.30.2-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.30.2)
+[![Version](https://img.shields.io/badge/Record360SDK-4.30.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.30.3)
 
 Record360 Android SDK
 ==================
@@ -89,7 +89,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
         }
         
         dependencies {
-            implementation 'com.record360.sdk:android-sdk:4.30.2'
+            implementation 'com.record360.sdk:android-sdk:4.30.3'
             implementation 'androidx.multidex:multidex:2.0.1'
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
         }
@@ -139,7 +139,7 @@ Add multidex flag to defaultConfig section in the module's build.gradle file
 ```
 
 # Initialize the Record360SDK
-Initialize a Record360SDK. This can be done at the Application level or within an Activity.
+Initialize the SDK in `Application.onCreate`. Android can kill the app while one of the SDK's screens is open and later recreate that screen directly, before any of your Activities run, so initializing from an Activity leaves that path uninitialized. Calling `initialize` more than once per process is safe as of 4.30.3; later calls only apply the settings.
 ```java
 
 public class SampleMultiDexApplication extends MultidexApplication {
@@ -442,6 +442,10 @@ Upload progress can also be monitored in the callback shown below. `percentCompl
 ```
 
 # Changelog
+## Version 4.30.3 (October 12th, 2026)
+- `Record360SDK.initialize` is now safe to call more than once per process. A second call previously rebuilt the SDK's internal graph and failed with `Configurations cannot be different if used to open the same file` once Realm was open. Call it from `Application.onCreate` so the SDK is ready even when Android restores one of its screens after killing the app.
+- New `Record360SDK.isInitialized()`.
+
 ## Version 4.30.2 (October 9th, 2026)
 - `onSDKShouldExit` now fires after the login error dialog is dismissed when the identity passed to `startRecord360WithIdentity` is rejected. Previously no exit was reported because no SDK screen had opened, leaving the host activity on screen.
 
