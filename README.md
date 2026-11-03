@@ -1,9 +1,9 @@
-[![Version](https://img.shields.io/badge/Record360SDK-4.30.3-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.30.3)
+[![Version](https://img.shields.io/badge/Record360SDK-4.31.0-success)](https://github.com/Record360/record360-sdk-android/packages/1655552?version=4.31.0)
 
 Record360 Android SDK
 ==================
 
-Last updated on – September 25th, 2026
+Last updated on – Nov 3rd, 2026
 
 # Introduction
 
@@ -89,7 +89,7 @@ Modify your App build.gradle (App Level) file in which you want to import the SD
         }
         
         dependencies {
-            implementation 'com.record360.sdk:android-sdk:4.30.3'
+            implementation 'com.record360.sdk:android-sdk:4.31.0'
             implementation 'androidx.multidex:multidex:2.0.1'
             coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
         }
@@ -273,9 +273,10 @@ Authentication:
 Inspection lifecycle. `onInspectionStarted` fires once the inspection has been created (including a resumed draft). One of `onInspectionComplete` or `onInspectionCancelled` follows. Cancelled fires whenever an in-progress inspection is discarded: the user deleted it, or it was cleared by a logout, an expired session, or a new launch for a different reference number or user.
 ```java
 	public void onInspectionStarted(String refNum, String inspectionNonce);
-	public void onInspectionComplete(String refNum, String inspectionNonce);
+	public void onInspectionComplete(String refNum, String inspectionNonce, InspectionRecord record);
 	public void onInspectionCancelled(String refNum, String inspectionNonce);
 ```
+`onInspectionComplete` carries an `InspectionRecord` built on the device, so your app has the inspection's data before the upload runs. See [The inspection record](#the-inspection-record) below for what it contains and how it differs from the uploaded one.
 
 SDK lifecycle. Exactly one of these fires per launch, after any inspection event, once the SDK's screens have finished and control is back with your app. A launch whose supplied identity fails to authenticate never shows an SDK screen; it reports `onSDKShouldExit` once the login error dialog is dismissed.
 ```java
@@ -288,39 +289,63 @@ SDK lifecycle. Exactly one of these fires per launch, after any inspection event
 
 Uploads run in the background after `onInspectionComplete`, and continue if your app is backgrounded or restarted. When an upload finishes, one of the callback methods below will be called.
 ```java
-	public void onInspectionUploaded(String refNum, String inspectionNonce, String inspectionJSON);
+	public void onInspectionUploaded(String refNum, String inspectionNonce, InspectionRecord record);
 	public void onInspectionUploadFailed(String refNum, String inspectionNonce, String error);
 	public void onInspectionUploadDeleted(String refNum, String inspectionNonce);
 ```
 A failed upload stays queued and is retried automatically, except when media files are missing on the device. `onInspectionUploadDeleted` fires when the user removes a queued upload from the Uploads screen. `onInspectionUploadDeleted`, `onInspectionStarted`, `onSDKShouldExit` and `onSDKShouldRelaunch` have default implementations, so implement only the ones you need.
 
-Here is an example inspectionJson response:
+### The inspection record
+
+Both `onInspectionComplete` and `onInspectionUploaded` deliver an `InspectionRecord`:
+```java
+	public final class InspectionRecord {
+		public String getReferenceNumber();
+		public String getInspectionNonce();
+		public String getRecordJson();         // the inspection in the v3 API shape
+		public RecordSource getSourceType();   // DEVICE or SERVER
+		public InspectionStatus getStatus();   // IN_PROGRESS, UPLOADING, FAILED or COMPLETED_UPLOAD
+		public InspectionError getError();     // why the status is FAILED; null otherwise
+		public Date getStartedAt();            // when the inspection was started on the device
+		public boolean isUploaded();           // true once status is COMPLETED_UPLOAD
+	}
+```
+`getRecordJson()` is always the same shape, the inspection object documented at https://docs.record360.com/reference/getinspection, so one parser handles both callbacks. It is never null in these two callbacks; it is null only on a record read back while the inspection is still in progress (see [Reading inspection state](#reading-inspection-state)). `getSourceType()` tells you how far to trust it:
+
+| `sourceType` | Delivered by | What it is |
+|---|---|---|
+| `DEVICE` | `onInspectionComplete` | Built on the device when the user finished the inspection, before any upload. Provisional: `id`, `dashboard_url`, `pdf_share_url`, every media `url`, `created_at` and `updated_at` are `null`, and the upload can still fail or be deleted by the user. Everything the user entered (checklist results, data templates, form data, the unit, the workflow, which photos and videos were taken) is present. |
+| `SERVER` | `onInspectionUploaded` | The server's response to the upload: the final inspection exactly as the API returns it. |
+
+Use the device record to react immediately, for example to show the captured values or start your own processing, and treat the server record as the one to store. The SDK never adds keys of its own to the JSON. `region` only appears in the server record, since the device does not know it.
+
+Here is an example of the JSON in a `SERVER` record:
 ```json
 {
   "id": "430",
   "type": "open",
   "unit": {
-    "id": "43",
-    "reference_number": "WMWRF33519TW73378"
+    "id": 43,
+    "reference_number": "SAMPLE-UNIT-001"
   },
   "damage_present": false,
   "dashboard_url": "https://dashboard.record360.com/dashboard/inspections/123",
-  "pdf_share_url": "https://app.record360.com/exports/30Ew8II5bNYaDwXt?code=123",
+  "pdf_share_url": "https://app.record360.com/exports/EXAMPLE?code=EXAMPLE",
   "user": {
-    "id": "120",
-    "username": "jdoe@record360.com"
+    "id": 120,
+    "username": "inspector@example.com"
   },
   "location": {
-    "id": "220",
+    "id": 220,
     "external_id": null,
-    "name": "Denver Branch"
+    "name": "Sample Branch"
   },
   "region": {
-    "id": "1",
-    "name": "Mountain West"
+    "id": 1,
+    "name": "Sample Region"
   },
   "department": {
-    "id": "1",
+    "id": 1,
     "name": "Rental"
   },
   "results": [
@@ -356,12 +381,12 @@ Here is an example inspectionJson response:
           "items": [
             {
               "id": "rake1",
-              "label": "Rake Riddle",
+              "label": "Rake",
               "value": "true"
             },
             {
               "id": "bucket1",
-              "label": "Quick Attach Bucket",
+              "label": "Bucket",
               "value": "false"
             }
           ]
@@ -388,7 +413,7 @@ Here is an example inspectionJson response:
     {
       "name": "Rental Contract",
       "object": "pdf_form",
-      "link": "https://app.record360.com/v3/forms/1WwmZX857Zb6ASpv",
+      "link": "https://app.record360.com/v3/forms/EXAMPLE",
       "data": {
         "one": "two"
       }
@@ -402,9 +427,9 @@ Here is an example inspectionJson response:
   "photos": [
     {
       "object": "photo",
-      "url": "https://media.record360.com/inspections/430/images/1c4bdd32-aa80-4355-a6aa-c56ed4c4102d",
+      "url": "https://media.record360.com/inspections/430/images/00000000-0000-0000-0000-000000000001",
       "instruction": {
-        "id": "abc123",
+        "id": "left_side",
         "label": "Take a photo of the left side"
       },
       "field": null
@@ -413,7 +438,7 @@ Here is an example inspectionJson response:
   "videos": [
     {
       "object": "video",
-      "url": "https://media.record360.com/inspections/430/videos/5f8a21e9-8600-4b73-9d27-e296c83e939a"
+      "url": "https://media.record360.com/inspections/430/videos/00000000-0000-0000-0000-000000000002"
     }
   ],
   "signatures": [
@@ -422,13 +447,13 @@ Here is an example inspectionJson response:
       "type": "inspection",
       "label": "Signed By",
       "printed_name": "John Doe",
-      "url": "https://media.record360.com/inspections/430/signatures/61b5af9d-b399-4113-8bb0-728f30f12424"
+      "url": "https://media.record360.com/inspections/430/signatures/00000000-0000-0000-0000-000000000003"
     },
     {
       "object": "signature",
       "type": "esign",
       "signed_at": "2026-01-30T06:55:31.441Z",
-      "url": "https://media.record360.com/inspections/430/signatures/61b5af9d-b399-4113-8bb0-728f30f12424"
+      "url": "https://media.record360.com/inspections/430/signatures/00000000-0000-0000-0000-000000000003"
     }
   ],
   "created_at": "2014-04-01T19:00:00.000Z",
@@ -441,7 +466,50 @@ Upload progress can also be monitored in the callback shown below. `percentCompl
     public void onInspectionUploadProgress(String refNum, String inspectionNonce, double percentComplete);
 ```
 
+### Reading inspection state
+
+Callbacks only reach an app that is running when the event happens. To catch up after a restart, or to show your own list of what this device holds, ask the SDK directly. These calls are safe from any thread once `Record360SDK.initialize` has run; before that they return nothing.
+```java
+	public static List<InspectionRecord> Record360SDK.inspections();                          // everything the device knows, newest first
+	public static List<InspectionRecord> Record360SDK.inspections(InspectionStatus... status); // only those statuses; none means all
+	public static InspectionRecord Record360SDK.inspection(String inspectionNonce);           // null once the inspection is gone from the device
+```
+Each record reports where the inspection is:
+
+| `status` | Meaning | What the record carries |
+|---|---|---|
+| `IN_PROGRESS` | Started and not yet completed. | Identity and `startedAt` only. `recordJson` and `sourceType` are null. |
+| `UPLOADING` | Completed and queued, uploading, or waiting for a network. The SDK will move it on its own. | The `DEVICE` record. Progress arrives through `onInspectionUploadProgress`, not on the record. |
+| `FAILED` | The upload has stopped and will not move on its own. | The `DEVICE` record and `error`. |
+| `COMPLETED_UPLOAD` | The server accepted the upload. | The `SERVER` record. The inspection id, dashboard link and timestamps are in the JSON. |
+
+A record read back right after `onInspectionComplete` or `onInspectionUploaded` is equal to the one the callback delivered. Nothing that is in the JSON is repeated on the record: read `id`, `dashboard_url` and `created_at` from `getRecordJson()`. `getStartedAt()` is different from the JSON's `created_at`, which is the upload time. `inspection(nonce)` returns null once the inspection has left the device, for example a cancelled draft or an upload the user deleted.
+
+When the status is `FAILED`, `getError().getCode()` says why and `getMessage()` carries a short English description for logging:
+
+| `InspectionError.Code` | Cause | What clears it |
+|---|---|---|
+| `AUTHENTICATION` | The server rejected the upload's credentials. | The user signs in again. |
+| `MISSING_MEDIA` | Media files are missing on the device. | The user deletes the upload from the Uploads screen. |
+| `RETRIES_EXHAUSTED` | The upload failed repeatedly. | Retried on the next SDK launch or from the Uploads screen. |
+| `INSPECTION_LIMIT` | The account has reached its inspection limit. | Retried on the next SDK launch. |
+
+A simple pattern is to read on resume and act on anything that needs attention:
+```java
+	@Override
+	protected void onResume() {
+		super.onResume();
+		for (InspectionRecord record : Record360SDK.inspections(InspectionStatus.FAILED)) {
+			Log.w(TAG, record.getInspectionNonce() + " stopped: " + record.getError().getCode());
+		}
+	}
+```
+
 # Changelog
+## Version 4.31.0 (November 3rd, 2026)
+- Breaking: `onInspectionComplete` and `onInspectionUploaded` now deliver an `InspectionRecord` instead of a JSON string. `onInspectionComplete` carries the inspection JSON built on the device, in the same v3 shape the upload returns, so your app has the data before the upload runs. See [The inspection record](#the-inspection-record).
+- New read API: `Record360SDK.inspections()`, `inspections(InspectionStatus...)` and `inspection(nonce)` return what the device knows about every inspection, with a status and a failure reason. See [Reading inspection state](#reading-inspection-state).
+
 ## Version 4.30.3 (October 12th, 2026)
 - `Record360SDK.initialize` is now safe to call more than once per process. A second call previously rebuilt the SDK's internal graph and failed with `Configurations cannot be different if used to open the same file` once Realm was open. Call it from `Application.onCreate` so the SDK is ready even when Android restores one of its screens after killing the app.
 - New `Record360SDK.isInitialized()`.
