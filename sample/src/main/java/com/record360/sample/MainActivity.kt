@@ -8,6 +8,8 @@ import android.widget.Toast
 import com.record360.R
 import com.record360.databinding.ActivityMainBinding
 import com.record360.sdk.IRecord360Interface
+import com.record360.sdk.InspectionRecord
+import com.record360.sdk.InspectionStatus
 import com.record360.sdk.R360Identity
 import com.record360.sdk.Record360SDK
 import timber.log.Timber
@@ -57,6 +59,26 @@ class MainActivity : Record360Activity(), IRecord360Interface {
             }
             binding.taskId.visibility = if (checkedId == R.id.task_intent_button) View.VISIBLE else View.GONE
             binding.inspectionDetailsLayout.visibility = if (checkedId == R.id.inspection_intent_button) View.VISIBLE else View.GONE
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logInspections()
+    }
+
+    /** Everything the SDK knows about this device's inspections, without waiting for a callback. */
+    private fun logInspections() {
+        val records = Record360SDK.inspections()
+        Log.i("MainActivity", "${records.size} inspection(s) on device")
+        records.forEach { record ->
+            val detail = when (record.status) {
+                InspectionStatus.IN_PROGRESS -> "started ${record.startedAt}"
+                InspectionStatus.UPLOADING -> "device json ${record.recordJson?.length ?: 0} chars"
+                InspectionStatus.FAILED -> "${record.error?.code}: ${record.error?.message}"
+                InspectionStatus.COMPLETED_UPLOAD -> "server json ${record.recordJson?.length ?: 0} chars"
+            }
+            Log.i("MainActivity", "  ${record.referenceNumber} (${record.inspectionNonce}) ${record.status} - $detail")
         }
     }
 
@@ -125,8 +147,9 @@ class MainActivity : Record360Activity(), IRecord360Interface {
         return contractFieldData
     }
 
-    override fun onInspectionComplete(refNum: String, inspectionNonce: String) {
-        Log.i("MainActivity","Inspection $refNum complete ($inspectionNonce)")
+    override fun onInspectionComplete(refNum: String, inspectionNonce: String, record: InspectionRecord) {
+        // record.recordJson is built on the device and provisional until the upload succeeds.
+        Log.i("MainActivity","Inspection $refNum complete ($inspectionNonce) status=${record.status} source=${record.sourceType}")
     }
 
     override fun onInspectionCancelled(refNum: String, inspectionNonce: String) {
@@ -144,9 +167,10 @@ class MainActivity : Record360Activity(), IRecord360Interface {
     override fun onInspectionUploaded(
         refNum: String,
         inspectionNonce: String,
-        inspectionJSON: String
+        record: InspectionRecord
     ) {
-        Log.i("MainActivity","Inspection $refNum uploaded ($inspectionNonce)")
+        // record.recordJson is the server's response; the one to store.
+        Log.i("MainActivity","Inspection $refNum uploaded ($inspectionNonce) status=${record.status} json=${record.recordJson?.length ?: 0} chars")
     }
 
     override fun onInspectionUploadFailed(refNum: String, inspectionNonce: String, error: String) {
